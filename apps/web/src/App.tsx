@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react'
 import {
-  APP_NAME,
   MOCK_VEHICLES,
   filterVehicles,
   formatPrice,
@@ -80,7 +79,7 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>{APP_NAME}</h1>
+        <h1>Ride<span>WithMe</span></h1>
         <input
           className="search"
           type="text"
