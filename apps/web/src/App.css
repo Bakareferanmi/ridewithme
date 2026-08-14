@@ -344,3 +344,89 @@ body {
 .action-btn:hover {
   opacity: 0.88;
 }
+
+.hero {
+  padding: 32px 0 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hero-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.hero-title span {
+  color: var(--accent);
+}
+
+.hero-subtitle {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  max-width: 440px;
+}
+
+.mode-chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mode-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.mode-chip:hover {
+  border-color: var(--text-dim);
+}
+
+.mode-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mode-dot-buy {
+  background: var(--c-buy);
+}
+.mode-dot-rent {
+  background: var(--c-rent);
+}
+.mode-dot-lease {
+  background: var(--c-lease);
+}
+.mode-dot-auction {
+  background: var(--c-auction);
+}
+
+@media (min-width: 768px) {
+  .hero {
+    padding: 48px 0 36px;
+  }
+  .hero-title {
+    font-size: 2.75rem;
+  }
+  .hero-subtitle {
+    font-size: 1.05rem;
+  }
+}
