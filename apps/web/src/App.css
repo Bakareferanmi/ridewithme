@@ -45,10 +45,7 @@ body {
   flex-direction: column;
   gap: 14px;
   padding: 12px 0 18px;
-  border-bottom: 1px solid transparent;
-  background-image: linear-gradient(var(--bg), var(--bg)), linear-gradient(90deg, var(--accent), var(--c-rent), var(--c-lease));
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
+  border-bottom: 1px solid var(--border);
 }
 
 .header h1 {
