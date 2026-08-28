@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import {
   MOCK_VEHICLES,
   filterVehicles,
@@ -6,6 +6,16 @@ import {
   getVehicleById,
   type ListingType,
 } from '@ridewithme/shared'
+import {
+  ArrowLeft,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Gauge,
+  MapPin,
+  Search,
+  Tag,
+} from 'lucide-react'
 import './App.css'
 
 const FILTER_TABS: { label: string; value: ListingType | 'all' }[] = [
@@ -34,6 +44,7 @@ function App() {
   const [query, setQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState<ListingType | 'all'>('all')
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
 
   const vehicles = useMemo(() => {
     return filterVehicles(MOCK_VEHICLES, {
@@ -44,11 +55,18 @@ function App() {
 
   const selectedVehicle = selectedId ? getVehicleById(MOCK_VEHICLES, selectedId) : undefined
 
+  const scrollTrack = (direction: 1 | -1) => {
+    const el = trackRef.current
+    if (!el) return
+    el.scrollBy({ left: direction * (el.clientWidth * 0.8), behavior: 'smooth' })
+  }
+
   if (selectedVehicle) {
     return (
       <div className="app">
         <button className="back-btn" onClick={() => setSelectedId(null)}>
-          ← Back to marketplace
+          <ArrowLeft size={16} strokeWidth={2} />
+          Back to marketplace
         </button>
         <div className="detail">
           <img className="detail-image" src={selectedVehicle.imageUrl} alt={`${selectedVehicle.make} ${selectedVehicle.model}`} />
@@ -59,19 +77,19 @@ function App() {
 
             <div className="spec-grid">
               <div className="spec">
-                <span className="spec-label">Mileage</span>
+                <span className="spec-label"><Gauge size={13} strokeWidth={2} /> Mileage</span>
                 <span className="spec-value">{selectedVehicle.mileage.toLocaleString()} mi</span>
               </div>
               <div className="spec">
-                <span className="spec-label">Location</span>
+                <span className="spec-label"><MapPin size={13} strokeWidth={2} /> Location</span>
                 <span className="spec-value">{selectedVehicle.location}</span>
               </div>
               <div className="spec">
-                <span className="spec-label">Year</span>
+                <span className="spec-label"><Calendar size={13} strokeWidth={2} /> Year</span>
                 <span className="spec-value">{selectedVehicle.year}</span>
               </div>
               <div className="spec">
-                <span className="spec-label">Type</span>
+                <span className="spec-label"><Tag size={13} strokeWidth={2} /> Type</span>
                 <span className="spec-value">{selectedVehicle.listingType}</span>
               </div>
             </div>
@@ -109,13 +127,16 @@ function App() {
 
       <header className="header">
         <h1>Ride<span>WithMe</span></h1>
-        <input
-          className="search"
-          type="text"
-          placeholder="Search make, model, year..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
+        <div className="search-wrap">
+          <Search className="search-icon" size={17} strokeWidth={2} />
+          <input
+            className="search"
+            type="text"
+            placeholder="Search make, model, year..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
       </header>
 
       <div className="tabs">
@@ -130,19 +151,36 @@ function App() {
         ))}
       </div>
 
-      <div className="grid">
-        {vehicles.map((v) => (
-          <div className="vehicle-card" key={v.id} onClick={() => setSelectedId(v.id)}>
-            <img src={v.imageUrl} alt={`${v.make} ${v.model}`} />
-            <div className="vehicle-info">
-              <h3>{v.year} {v.make} {v.model}</h3>
-              <p className="price">{formatPrice(v.price, v.listingType)}</p>
-              <p className="meta">{v.mileage.toLocaleString()} mi · {v.location}</p>
-              <span className={`badge badge-${v.listingType}`}>{v.listingType}</span>
+      <div className="carousel">
+        <div className="carousel-track" ref={trackRef}>
+          {vehicles.map((v) => (
+            <div className="vehicle-card" key={v.id} onClick={() => setSelectedId(v.id)}>
+              <div className="vehicle-card-image">
+                <img src={v.imageUrl} alt={`${v.make} ${v.model}`} loading="lazy" />
+                <span className={`badge badge-${v.listingType}`}>{v.listingType}</span>
+              </div>
+              <div className="vehicle-info">
+                <h3>{v.year} {v.make} {v.model}</h3>
+                <p className="price">{formatPrice(v.price, v.listingType)}</p>
+                <div className="meta">
+                  <span><Gauge size={12} strokeWidth={2} /> {(v.mileage / 1000).toFixed(0)}k mi</span>
+                  <span><MapPin size={12} strokeWidth={2} /> {v.location}</span>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
-        {vehicles.length === 0 && <p className="empty">No vehicles match your search.</p>}
+          ))}
+          {vehicles.length === 0 && <p className="empty">No vehicles match your search.</p>}
+        </div>
+        {vehicles.length > 0 && (
+          <>
+            <button className="carousel-nav carousel-nav-prev" onClick={() => scrollTrack(-1)} aria-label="Scroll left">
+              <ChevronLeft size={18} strokeWidth={2.5} />
+            </button>
+            <button className="carousel-nav carousel-nav-next" onClick={() => scrollTrack(1)} aria-label="Scroll right">
+              <ChevronRight size={18} strokeWidth={2.5} />
+            </button>
+          </>
+        )}
       </div>
     </div>
   )
