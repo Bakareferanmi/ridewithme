@@ -26,9 +26,10 @@ export function AuctionCountdown({ endsAt, compact = false }: { endsAt: string; 
   }, [endsAt])
 
   const ended = remaining <= 0
+  const urgent = !ended && remaining < 60 * 60 * 1000
 
   return (
-    <span className={`countdown ${compact ? 'countdown-compact' : ''} ${ended ? 'countdown-ended' : ''}`}>
+    <span className={`countdown ${compact ? 'countdown-compact' : ''} ${ended ? 'countdown-ended' : ''} ${urgent ? 'countdown-urgent' : ''}`}>
       <Timer size={compact ? 11 : 14} strokeWidth={2} />
       {ended ? 'Auction ended' : formatRemaining(remaining)}
     </span>

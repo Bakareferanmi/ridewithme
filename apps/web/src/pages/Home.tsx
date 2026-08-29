@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   MOCK_VEHICLES,
@@ -18,7 +18,9 @@ import {
   SlidersHorizontal,
 } from 'lucide-react'
 import { useFavorites } from '../hooks/useFavorites'
+import { useToast } from '../hooks/useToast'
 import { AuctionCountdown } from '../components/AuctionCountdown'
+import { VehicleImage } from '../components/VehicleImage'
 
 const FILTER_TABS: { label: string; value: ListingType | 'all' }[] = [
   { label: 'All', value: 'all' },
@@ -39,6 +41,7 @@ const SORT_OPTIONS: { label: string; value: SortOption }[] = [
 export function Home() {
   const navigate = useNavigate()
   const { isFavorite, toggleFavorite } = useFavorites()
+  const { showToast } = useToast()
 
   const [query, setQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState<ListingType | 'all'>('all')
@@ -49,8 +52,15 @@ export function Home() {
   const [maxPrice, setMaxPrice] = useState('')
   const [minYear, setMinYear] = useState('')
   const [maxYear, setMaxYear] = useState('')
+  const [isScrolled, setIsScrolled] = useState(false)
 
   const trackRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 24)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const vehicles = useMemo(() => {
     const filtered = filterVehicles(MOCK_VEHICLES, {
@@ -80,9 +90,15 @@ export function Home() {
     setMaxYear('')
   }
 
+  const handleToggleFavorite = (id: string, label: string) => {
+    const wasFavorite = isFavorite(id)
+    toggleFavorite(id)
+    showToast(wasFavorite ? 'Removed from saved' : `Saved ${label}`)
+  }
+
   return (
     <div className="app">
-      <header className="header">
+      <header className={`header ${isScrolled ? 'header-scrolled' : ''}`}>
         <h1>Ride<span>WithMe</span></h1>
         <div className="search-wrap">
           <Search className="search-icon" size={17} strokeWidth={2} />
@@ -170,16 +186,21 @@ export function Home() {
 
       <div className="carousel">
         <div className="carousel-track" ref={trackRef}>
-          {vehicles.map((v) => (
-            <div className="vehicle-card" key={v.id} onClick={() => navigate(`/vehicle/${v.id}`)}>
+          {vehicles.map((v, idx) => (
+            <div
+              className="vehicle-card"
+              key={v.id}
+              style={{ animationDelay: `${Math.min(idx, 8) * 40}ms` }}
+              onClick={() => navigate(`/vehicle/${v.id}`)}
+            >
               <div className="vehicle-card-image">
-                <img src={v.imageUrl} alt={`${v.make} ${v.model}`} loading="lazy" />
+                <VehicleImage src={v.imageUrl} alt={`${v.make} ${v.model}`} />
                 <span className={`badge badge-${v.listingType}`}>{v.listingType}</span>
                 <button
                   className={`favorite-btn ${isFavorite(v.id) ? 'favorite-btn-active' : ''}`}
                   onClick={(e) => {
                     e.stopPropagation()
-                    toggleFavorite(v.id)
+                    handleToggleFavorite(v.id, `${v.year} ${v.make} ${v.model}`)
                   }}
                   aria-label="Toggle favorite"
                 >
