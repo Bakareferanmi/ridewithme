@@ -1,15 +1,15 @@
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import {
-  MOCK_VEHICLES,
-  getVehicleById,
   formatPrice,
   type ListingType,
 } from '@ridewithme/shared'
 import { ArrowLeft, Calendar, Gauge, Heart, MapPin, Tag } from 'lucide-react'
 import { useFavorites } from '../hooks/useFavorites'
 import { useToast } from '../hooks/useToast'
+import { useVehicles } from '../hooks/useVehicles'
+import { useDocumentMeta } from '../hooks/useDocumentMeta'
 import { AuctionCountdown } from '../components/AuctionCountdown'
-import { VehicleImage } from '../components/VehicleImage'
+import { ImageGallery } from '../components/ImageGallery'
 
 const ACTION_LABEL: Record<ListingType, string> = {
   buy: 'Buy Now',
@@ -30,8 +30,17 @@ export function VehicleDetail() {
   const navigate = useNavigate()
   const { isFavorite, toggleFavorite } = useFavorites()
   const { showToast } = useToast()
+  const { vehicles } = useVehicles()
 
-  const vehicle = id ? getVehicleById(MOCK_VEHICLES, id) : undefined
+  const vehicle = id ? vehicles.find((v) => v.id === id) : undefined
+
+  useDocumentMeta({
+    title: vehicle ? `${vehicle.year} ${vehicle.make} ${vehicle.model} · RideWithMe` : 'RideWithMe',
+    description: vehicle
+      ? `${formatPrice(vehicle.price, vehicle.listingType)} · ${vehicle.mileage.toLocaleString()} mi · ${vehicle.location}`
+      : undefined,
+    image: vehicle?.images[0],
+  })
 
   if (!vehicle) {
     return <Navigate to="/" replace />
@@ -51,9 +60,7 @@ export function VehicleDetail() {
       </button>
       <div className="detail">
         <div className="detail-image-wrap">
-          <div className="detail-image">
-            <VehicleImage src={vehicle.imageUrl} alt={`${vehicle.make} ${vehicle.model}`} />
-          </div>
+          <ImageGallery images={vehicle.images} alt={`${vehicle.make} ${vehicle.model}`} />
           <button
             className={`favorite-btn favorite-btn-detail ${isFavorite(vehicle.id) ? 'favorite-btn-active' : ''}`}
             onClick={handleToggleFavorite}

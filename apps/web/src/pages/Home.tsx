@@ -1,26 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
-  MOCK_VEHICLES,
   filterVehicles,
   sortVehicles,
-  formatPrice,
   type ListingType,
   type SortOption,
 } from '@ridewithme/shared'
 import {
   ChevronLeft,
   ChevronRight,
-  Gauge,
-  Heart,
-  MapPin,
   Search,
   SlidersHorizontal,
 } from 'lucide-react'
+import { Heart } from 'lucide-react'
 import { useFavorites } from '../hooks/useFavorites'
-import { useToast } from '../hooks/useToast'
-import { AuctionCountdown } from '../components/AuctionCountdown'
-import { VehicleImage } from '../components/VehicleImage'
+import { useVehicles } from '../hooks/useVehicles'
+import { VehicleCard } from '../components/VehicleCard'
 
 const FILTER_TABS: { label: string; value: ListingType | 'all' }[] = [
   { label: 'All', value: 'all' },
@@ -39,9 +33,8 @@ const SORT_OPTIONS: { label: string; value: SortOption }[] = [
 ]
 
 export function Home() {
-  const navigate = useNavigate()
-  const { isFavorite, toggleFavorite } = useFavorites()
-  const { showToast } = useToast()
+  const { vehicles: allVehicles } = useVehicles()
+  const { isFavorite } = useFavorites()
 
   const [query, setQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState<ListingType | 'all'>('all')
@@ -63,7 +56,7 @@ export function Home() {
   }, [])
 
   const vehicles = useMemo(() => {
-    const filtered = filterVehicles(MOCK_VEHICLES, {
+    const filtered = filterVehicles(allVehicles, {
       query: query || undefined,
       listingType: activeFilter === 'all' ? undefined : activeFilter,
       minPrice: minPrice ? Number(minPrice) : undefined,
@@ -73,7 +66,7 @@ export function Home() {
     })
     const withFavorites = showFavoritesOnly ? filtered.filter((v) => isFavorite(v.id)) : filtered
     return sortVehicles(withFavorites, sortBy)
-  }, [query, activeFilter, minPrice, maxPrice, minYear, maxYear, showFavoritesOnly, isFavorite, sortBy])
+  }, [allVehicles, query, activeFilter, minPrice, maxPrice, minYear, maxYear, showFavoritesOnly, isFavorite, sortBy])
 
   const scrollTrack = (direction: 1 | -1) => {
     const el = trackRef.current
@@ -88,12 +81,6 @@ export function Home() {
     setMaxPrice('')
     setMinYear('')
     setMaxYear('')
-  }
-
-  const handleToggleFavorite = (id: string, label: string) => {
-    const wasFavorite = isFavorite(id)
-    toggleFavorite(id)
-    showToast(wasFavorite ? 'Removed from saved' : `Saved ${label}`)
   }
 
   return (
@@ -187,38 +174,7 @@ export function Home() {
       <div className="carousel">
         <div className="carousel-track" ref={trackRef}>
           {vehicles.map((v, idx) => (
-            <div
-              className="vehicle-card"
-              key={v.id}
-              style={{ animationDelay: `${Math.min(idx, 8) * 40}ms` }}
-              onClick={() => navigate(`/vehicle/${v.id}`)}
-            >
-              <div className="vehicle-card-image">
-                <VehicleImage src={v.imageUrl} alt={`${v.make} ${v.model}`} />
-                <span className={`badge badge-${v.listingType}`}>{v.listingType}</span>
-                <button
-                  className={`favorite-btn ${isFavorite(v.id) ? 'favorite-btn-active' : ''}`}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleToggleFavorite(v.id, `${v.year} ${v.make} ${v.model}`)
-                  }}
-                  aria-label="Toggle favorite"
-                >
-                  <Heart size={14} strokeWidth={2} fill={isFavorite(v.id) ? 'currentColor' : 'none'} />
-                </button>
-                {v.listingType === 'auction' && v.auctionEndsAt && (
-                  <AuctionCountdown endsAt={v.auctionEndsAt} compact />
-                )}
-              </div>
-              <div className="vehicle-info">
-                <h3>{v.year} {v.make} {v.model}</h3>
-                <p className="price">{formatPrice(v.price, v.listingType)}</p>
-                <div className="meta">
-                  <span><Gauge size={12} strokeWidth={2} /> {(v.mileage / 1000).toFixed(0)}k mi</span>
-                  <span><MapPin size={12} strokeWidth={2} /> {v.location}</span>
-                </div>
-              </div>
-            </div>
+            <VehicleCard key={v.id} vehicle={v} style={{ animationDelay: `${Math.min(idx, 8) * 40}ms` }} />
           ))}
           {vehicles.length === 0 && (
             <p className="empty">
