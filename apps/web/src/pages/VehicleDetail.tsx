@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import {
   MOCK_VEHICLES,
   getVehicleById,
@@ -24,15 +24,7 @@ export function VehicleDetail() {
   const vehicle = id ? getVehicleById(MOCK_VEHICLES, id) : undefined
 
   if (!vehicle) {
-    return (
-      <div className="app">
-        <button className="back-btn" onClick={() => navigate('/')}>
-          <ArrowLeft size={16} strokeWidth={2} />
-          Back to marketplace
-        </button>
-        <p className="empty">Vehicle not found.</p>
-      </div>
-    )
+    return <Navigate to="/" replace />
   }
 
   return (
