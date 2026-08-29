@@ -12,7 +12,11 @@ export interface Vehicle {
   mileage: number;
   imageUrl: string;
   location: string;
+  /** ISO timestamp — only present for auction listings */
+  auctionEndsAt?: string;
 }
+
+const hoursFromNow = (hours: number) => new Date(Date.now() + hours * 60 * 60 * 1000).toISOString();
 
 export const MOCK_VEHICLES: Vehicle[] = [
   {
@@ -58,19 +62,26 @@ export const MOCK_VEHICLES: Vehicle[] = [
     mileage: 32000,
     imageUrl: "https://images.unsplash.com/photo-1584345604476-8ec5f452d1f2?w=600",
     location: "Port Harcourt",
+    auctionEndsAt: hoursFromNow(26),
   },
 ];
 
 export interface VehicleFilters {
   listingType?: ListingType;
   query?: string;
+  minPrice?: number;
   maxPrice?: number;
+  minYear?: number;
+  maxYear?: number;
 }
 
 export function filterVehicles(vehicles: Vehicle[], filters: VehicleFilters): Vehicle[] {
   return vehicles.filter((v) => {
     if (filters.listingType && v.listingType !== filters.listingType) return false;
+    if (filters.minPrice && v.price < filters.minPrice) return false;
     if (filters.maxPrice && v.price > filters.maxPrice) return false;
+    if (filters.minYear && v.year < filters.minYear) return false;
+    if (filters.maxYear && v.year > filters.maxYear) return false;
     if (filters.query) {
       const q = filters.query.toLowerCase();
       const haystack = `${v.make} ${v.model} ${v.year}`.toLowerCase();
@@ -78,6 +89,25 @@ export function filterVehicles(vehicles: Vehicle[], filters: VehicleFilters): Ve
     }
     return true;
   });
+}
+
+export type SortOption = "default" | "price-asc" | "price-desc" | "year-desc" | "mileage-asc";
+
+export function sortVehicles(vehicles: Vehicle[], sortBy: SortOption): Vehicle[] {
+  if (sortBy === "default") return vehicles;
+  const sorted = [...vehicles];
+  switch (sortBy) {
+    case "price-asc":
+      return sorted.sort((a, b) => a.price - b.price);
+    case "price-desc":
+      return sorted.sort((a, b) => b.price - a.price);
+    case "year-desc":
+      return sorted.sort((a, b) => b.year - a.year);
+    case "mileage-asc":
+      return sorted.sort((a, b) => a.mileage - b.mileage);
+    default:
+      return sorted;
+  }
 }
 
 export function formatPrice(price: number, listingType: ListingType): string {
