@@ -7,7 +7,9 @@ import {
 } from '@ridewithme/shared'
 import { ArrowLeft, Calendar, Gauge, Heart, MapPin, Tag } from 'lucide-react'
 import { useFavorites } from '../hooks/useFavorites'
+import { useToast } from '../hooks/useToast'
 import { AuctionCountdown } from '../components/AuctionCountdown'
+import { VehicleImage } from '../components/VehicleImage'
 
 const ACTION_LABEL: Record<ListingType, string> = {
   buy: 'Buy Now',
@@ -16,15 +18,29 @@ const ACTION_LABEL: Record<ListingType, string> = {
   auction: 'Place Bid',
 }
 
+const ACTION_TOAST: Record<ListingType, string> = {
+  buy: 'Purchase request sent (demo)',
+  rent: 'Rental request sent (demo)',
+  lease: 'Lease request sent (demo)',
+  auction: 'Bid placed (demo)',
+}
+
 export function VehicleDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { isFavorite, toggleFavorite } = useFavorites()
+  const { showToast } = useToast()
 
   const vehicle = id ? getVehicleById(MOCK_VEHICLES, id) : undefined
 
   if (!vehicle) {
     return <Navigate to="/" replace />
+  }
+
+  const handleToggleFavorite = () => {
+    const wasFavorite = isFavorite(vehicle.id)
+    toggleFavorite(vehicle.id)
+    showToast(wasFavorite ? 'Removed from saved' : 'Saved to favorites')
   }
 
   return (
@@ -35,10 +51,12 @@ export function VehicleDetail() {
       </button>
       <div className="detail">
         <div className="detail-image-wrap">
-          <img className="detail-image" src={vehicle.imageUrl} alt={`${vehicle.make} ${vehicle.model}`} />
+          <div className="detail-image">
+            <VehicleImage src={vehicle.imageUrl} alt={`${vehicle.make} ${vehicle.model}`} />
+          </div>
           <button
             className={`favorite-btn favorite-btn-detail ${isFavorite(vehicle.id) ? 'favorite-btn-active' : ''}`}
-            onClick={() => toggleFavorite(vehicle.id)}
+            onClick={handleToggleFavorite}
             aria-label="Toggle favorite"
           >
             <Heart size={18} strokeWidth={2} fill={isFavorite(vehicle.id) ? 'currentColor' : 'none'} />
@@ -74,7 +92,9 @@ export function VehicleDetail() {
             </div>
           </div>
 
-          <button className="action-btn">{ACTION_LABEL[vehicle.listingType]}</button>
+          <button className="action-btn" onClick={() => showToast(ACTION_TOAST[vehicle.listingType])}>
+            {ACTION_LABEL[vehicle.listingType]}
+          </button>
         </div>
       </div>
     </div>
