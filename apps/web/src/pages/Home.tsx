@@ -28,13 +28,6 @@ const FILTER_TABS: { label: string; value: ListingType | 'all' }[] = [
   { label: 'Auction', value: 'auction' },
 ]
 
-const MODE_CHIPS: { label: string; value: ListingType }[] = [
-  { label: 'Buy', value: 'buy' },
-  { label: 'Rent', value: 'rent' },
-  { label: 'Lease', value: 'lease' },
-  { label: 'Auction', value: 'auction' },
-]
-
 const SORT_OPTIONS: { label: string; value: SortOption }[] = [
   { label: 'Featured', value: 'default' },
   { label: 'Price: Low to High', value: 'price-asc' },
@@ -89,28 +82,6 @@ export function Home() {
 
   return (
     <div className="app">
-      <section className="hero">
-        <h2 className="hero-title">
-          One platform.<br />
-          <span>Every way</span> to drive.
-        </h2>
-        <p className="hero-subtitle">
-          Buy, rent, lease, or bid on your next vehicle — all in one place.
-        </p>
-        <div className="mode-chips">
-          {MODE_CHIPS.map((mode) => (
-            <button
-              key={mode.value}
-              className="mode-chip"
-              onClick={() => setActiveFilter(mode.value)}
-            >
-              <span className={`mode-dot mode-dot-${mode.value}`} />
-              {mode.label}
-            </button>
-          ))}
-        </div>
-      </section>
-
       <header className="header">
         <h1>Ride<span>WithMe</span></h1>
         <div className="search-wrap">
