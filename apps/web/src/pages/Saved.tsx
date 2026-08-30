@@ -28,7 +28,7 @@ export function Saved() {
           <span>Tap the heart on any listing to save it here.</span>
         </div>
       ) : (
-        <div className="saved-grid">
+        <div className="vehicle-grid">
           {savedVehicles.map((v) => (
             <VehicleCard key={v.id} vehicle={v} />
           ))}

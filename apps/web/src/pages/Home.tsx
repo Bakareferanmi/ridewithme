@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   filterVehicles,
   sortVehicles,
@@ -6,8 +6,6 @@ import {
   type SortOption,
 } from '@ridewithme/shared'
 import {
-  ChevronLeft,
-  ChevronRight,
   Search,
   SlidersHorizontal,
 } from 'lucide-react'
@@ -47,8 +45,6 @@ export function Home() {
   const [maxYear, setMaxYear] = useState('')
   const [isScrolled, setIsScrolled] = useState(false)
 
-  const trackRef = useRef<HTMLDivElement>(null)
-
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 24)
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -67,12 +63,6 @@ export function Home() {
     const withFavorites = showFavoritesOnly ? filtered.filter((v) => isFavorite(v.id)) : filtered
     return sortVehicles(withFavorites, sortBy)
   }, [allVehicles, query, activeFilter, minPrice, maxPrice, minYear, maxYear, showFavoritesOnly, isFavorite, sortBy])
-
-  const scrollTrack = (direction: 1 | -1) => {
-    const el = trackRef.current
-    if (!el) return
-    el.scrollBy({ left: direction * (el.clientWidth * 0.8), behavior: 'smooth' })
-  }
 
   const activeFilterCount = [minPrice, maxPrice, minYear, maxYear].filter(Boolean).length
 
@@ -171,26 +161,14 @@ export function Home() {
         </div>
       )}
 
-      <div className="carousel">
-        <div className="carousel-track" ref={trackRef}>
-          {vehicles.map((v, idx) => (
-            <VehicleCard key={v.id} vehicle={v} style={{ animationDelay: `${Math.min(idx, 8) * 40}ms` }} />
-          ))}
-          {vehicles.length === 0 && (
-            <p className="empty">
-              {showFavoritesOnly ? 'No saved vehicles yet.' : 'No vehicles match your search.'}
-            </p>
-          )}
-        </div>
-        {vehicles.length > 0 && (
-          <>
-            <button className="carousel-nav carousel-nav-prev" onClick={() => scrollTrack(-1)} aria-label="Scroll left">
-              <ChevronLeft size={18} strokeWidth={2.5} />
-            </button>
-            <button className="carousel-nav carousel-nav-next" onClick={() => scrollTrack(1)} aria-label="Scroll right">
-              <ChevronRight size={18} strokeWidth={2.5} />
-            </button>
-          </>
+      <div className="vehicle-grid">
+        {vehicles.map((v, idx) => (
+          <VehicleCard key={v.id} vehicle={v} style={{ animationDelay: `${Math.min(idx, 8) * 40}ms` }} />
+        ))}
+        {vehicles.length === 0 && (
+          <p className="empty">
+            {showFavoritesOnly ? 'No saved vehicles yet.' : 'No vehicles match your search.'}
+          </p>
         )}
       </div>
     </div>
