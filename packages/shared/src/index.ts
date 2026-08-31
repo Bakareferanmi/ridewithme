@@ -14,6 +14,8 @@ export interface Vehicle {
   location: string;
   /** ISO timestamp — only present for auction listings */
   auctionEndsAt?: string;
+  /** Present once a "buy" listing has been purchased (demo only) */
+  status?: "available" | "sold";
 }
 
 const hoursFromNow = (hours: number) => new Date(Date.now() + hours * 60 * 60 * 1000).toISOString();

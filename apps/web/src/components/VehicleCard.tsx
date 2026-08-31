@@ -44,6 +44,7 @@ export function VehicleCard({ vehicle, style, selectable, selected, onSelectTogg
       <div className="vehicle-card-image">
         <VehicleImage src={vehicle.images[0]} alt={`${vehicle.make} ${vehicle.model}`} />
         <span className={`badge badge-${vehicle.listingType}`}>{vehicle.listingType}</span>
+        {vehicle.status === 'sold' && <span className="sold-ribbon">Sold</span>}
         {selectable ? (
           <span className={`select-check ${selected ? 'select-check-active' : ''}`}>
             {selected && <Check size={13} strokeWidth={3} />}
