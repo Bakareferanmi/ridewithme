@@ -10,6 +10,7 @@ import { useVehicles } from '../hooks/useVehicles'
 import { useDocumentMeta } from '../hooks/useDocumentMeta'
 import { AuctionCountdown } from '../components/AuctionCountdown'
 import { ImageGallery } from '../components/ImageGallery'
+import { VehicleCard } from '../components/VehicleCard'
 
 const ACTION_LABEL: Record<ListingType, string> = {
   buy: 'Buy Now',
@@ -45,6 +46,10 @@ export function VehicleDetail() {
   if (!vehicle) {
     return <Navigate to="/" replace />
   }
+
+  const sameMake = vehicles.filter((v) => v.id !== vehicle.id && v.make === vehicle.make)
+  const sameType = vehicles.filter((v) => v.id !== vehicle.id && v.make !== vehicle.make && v.listingType === vehicle.listingType)
+  const similar = [...sameMake, ...sameType].slice(0, 4)
 
   const handleToggleFavorite = () => {
     const wasFavorite = isFavorite(vehicle.id)
@@ -104,6 +109,17 @@ export function VehicleDetail() {
           </button>
         </div>
       </div>
+
+      {similar.length > 0 && (
+        <div className="similar-section">
+          <h2 className="similar-title">Similar vehicles</h2>
+          <div className="vehicle-grid">
+            {similar.map((v) => (
+              <VehicleCard key={v.id} vehicle={v} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

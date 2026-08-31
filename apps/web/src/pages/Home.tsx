@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   filterVehicles,
   sortVehicles,
@@ -6,12 +7,14 @@ import {
   type SortOption,
 } from '@ridewithme/shared'
 import {
+  GitCompare,
   Search,
   SlidersHorizontal,
 } from 'lucide-react'
 import { Heart } from 'lucide-react'
 import { useFavorites } from '../hooks/useFavorites'
 import { useVehicles } from '../hooks/useVehicles'
+import { useToast } from '../hooks/useToast'
 import { VehicleCard } from '../components/VehicleCard'
 
 const FILTER_TABS: { label: string; value: ListingType | 'all' }[] = [
@@ -30,9 +33,13 @@ const SORT_OPTIONS: { label: string; value: SortOption }[] = [
   { label: 'Lowest Mileage', value: 'mileage-asc' },
 ]
 
+const MAX_COMPARE = 3
+
 export function Home() {
+  const navigate = useNavigate()
   const { vehicles: allVehicles } = useVehicles()
   const { isFavorite } = useFavorites()
+  const { showToast } = useToast()
 
   const [query, setQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState<ListingType | 'all'>('all')
@@ -44,6 +51,8 @@ export function Home() {
   const [minYear, setMinYear] = useState('')
   const [maxYear, setMaxYear] = useState('')
   const [isScrolled, setIsScrolled] = useState(false)
+  const [compareMode, setCompareMode] = useState(false)
+  const [compareIds, setCompareIds] = useState<string[]>([])
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 24)
@@ -71,6 +80,22 @@ export function Home() {
     setMaxPrice('')
     setMinYear('')
     setMaxYear('')
+  }
+
+  const toggleCompareMode = () => {
+    setCompareMode((v) => !v)
+    setCompareIds([])
+  }
+
+  const handleSelectToggle = (id: string) => {
+    setCompareIds((prev) => {
+      if (prev.includes(id)) return prev.filter((i) => i !== id)
+      if (prev.length >= MAX_COMPARE) {
+        showToast(`You can compare up to ${MAX_COMPARE} vehicles`)
+        return prev
+      }
+      return [...prev, id]
+    })
   }
 
   return (
@@ -121,6 +146,15 @@ export function Home() {
           {activeFilterCount > 0 && <span className="filter-count">{activeFilterCount}</span>}
         </button>
 
+        <button
+          className={`icon-btn ${compareMode ? 'icon-btn-active' : ''}`}
+          onClick={toggleCompareMode}
+          aria-label="Toggle comparison mode"
+        >
+          <GitCompare size={15} strokeWidth={2} />
+          Compare
+        </button>
+
         <select
           className="sort-select"
           value={sortBy}
@@ -161,9 +195,20 @@ export function Home() {
         </div>
       )}
 
+      {compareMode && (
+        <p className="compare-hint">Select up to {MAX_COMPARE} vehicles to compare.</p>
+      )}
+
       <div className="vehicle-grid">
         {vehicles.map((v, idx) => (
-          <VehicleCard key={v.id} vehicle={v} style={{ animationDelay: `${Math.min(idx, 8) * 40}ms` }} />
+          <VehicleCard
+            key={v.id}
+            vehicle={v}
+            style={{ animationDelay: `${Math.min(idx, 8) * 40}ms` }}
+            selectable={compareMode}
+            selected={compareIds.includes(v.id)}
+            onSelectToggle={handleSelectToggle}
+          />
         ))}
         {vehicles.length === 0 && (
           <p className="empty">
@@ -171,6 +216,13 @@ export function Home() {
           </p>
         )}
       </div>
+
+      {compareMode && compareIds.length >= 2 && (
+        <button className="compare-fab" onClick={() => navigate(`/compare/${compareIds.join(',')}`)}>
+          <GitCompare size={16} strokeWidth={2} />
+          Compare {compareIds.length}
+        </button>
+      )}
     </div>
   )
 }
