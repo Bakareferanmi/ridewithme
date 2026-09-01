@@ -47,7 +47,7 @@ export function VehicleDetail() {
   const [bidAmount, setBidAmount] = useState(0)
 
   if (!vehicle) {
-    return <Navigate to="/" replace />
+    return <Navigate to="/browse" replace />
   }
 
   const sameMake = vehicles.filter((v) => v.id !== vehicle.id && v.make === vehicle.make)
@@ -102,7 +102,7 @@ export function VehicleDetail() {
 
   return (
     <div className="app">
-      <button className="back-btn" onClick={() => navigate('/')}>
+      <button className="back-btn" onClick={() => navigate('/browse')}>
         <ArrowLeft size={16} strokeWidth={2} />
         Back to marketplace
       </button>
@@ -152,8 +152,7 @@ export function VehicleDetail() {
           </button>
         </div>
       </div>
-
-      {similar.length > 0 && (
+{similar.length > 0 && (
         <div className="similar-section">
           <h2 className="similar-title">Similar vehicles</h2>
           <div className="vehicle-grid">
