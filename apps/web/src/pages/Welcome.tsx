@@ -49,7 +49,7 @@ export function Welcome() {
 
         <div className="welcome-cta-group">
           <button className="action-btn" onClick={() => navigate('/browse')}>
-            Start Browsing
+            Explore Vehicles
             <ArrowRight size={16} strokeWidth={2} />
           </button>
           <button className="welcome-link" onClick={() => navigate('/sell')}>
