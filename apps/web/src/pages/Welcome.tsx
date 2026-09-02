@@ -19,9 +19,6 @@ export function Welcome() {
 
   return (
     <div className="welcome-page">
-      <span className="welcome-ring welcome-ring-outer" />
-      <span className="welcome-ring welcome-ring-inner" />
-
       <div className="welcome-brand">
         Ride<span>WithMe</span>
       </div>
