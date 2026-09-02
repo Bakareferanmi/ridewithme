@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom'
-import { ArrowRight } from 'lucide-react'
 import { useDocumentMeta } from '../hooks/useDocumentMeta'
 
 const TYPES: { label: string; dotClass: string }[] = [
@@ -13,8 +12,8 @@ export function Welcome() {
   const navigate = useNavigate()
 
   useDocumentMeta({
-    title: 'RideWithMe — Buy, Rent, Lease, or Bid on Vehicles',
-    description: 'One platform for every way to drive — buy, rent, lease, or bid on vehicles.',
+    title: 'RideWithMe: Buy, Rent, Lease, or Bid on Vehicles',
+    description: 'One platform for every way to drive. Buy, rent, lease, or bid on vehicles.',
   })
 
   return (
@@ -30,7 +29,7 @@ export function Welcome() {
           to <span>drive.</span>
         </h1>
         <p className="welcome-sub">
-          Buy, rent, lease, or bid on your next vehicle — all in one place.
+          Buy, rent, lease, or bid on your next vehicle, all in one place.
         </p>
 
         <div className="welcome-divider" />
@@ -47,7 +46,6 @@ export function Welcome() {
         <div className="welcome-cta-group">
           <button className="action-btn" onClick={() => navigate('/browse')}>
             Explore Vehicles
-            <ArrowRight size={16} strokeWidth={2} />
           </button>
           <button className="welcome-link" onClick={() => navigate('/sell')}>
             List a vehicle instead
