@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
-import { Search, Tag } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useDocumentMeta } from '../hooks/useDocumentMeta'
 
-const MODES: { label: string; dotClass: string }[] = [
+const TYPES: { label: string; dotClass: string }[] = [
   { label: 'Buy', dotClass: 'mode-dot-buy' },
   { label: 'Rent', dotClass: 'mode-dot-rent' },
   { label: 'Lease', dotClass: 'mode-dot-lease' },
@@ -19,32 +19,43 @@ export function Welcome() {
 
   return (
     <div className="welcome-page">
-      <div className="welcome-glow" />
-      <h1 className="welcome-title">
-        Ride<span>WithMe</span>
-      </h1>
-      <p className="welcome-tagline">
-        One platform. Every way to drive.
-      </p>
+      <span className="welcome-ring welcome-ring-outer" />
+      <span className="welcome-ring welcome-ring-inner" />
 
-      <div className="welcome-modes">
-        {MODES.map((mode) => (
-          <span className="welcome-mode-chip" key={mode.label}>
-            <span className={`mode-dot ${mode.dotClass}`} />
-            {mode.label}
-          </span>
-        ))}
+      <div className="welcome-brand">
+        Ride<span>WithMe</span>
       </div>
 
-      <div className="welcome-actions">
-        <button className="action-btn" onClick={() => navigate('/browse')}>
-          <Search size={16} strokeWidth={2} />
-          Start Browsing
-        </button>
-        <button className="welcome-secondary-btn" onClick={() => navigate('/sell')}>
-          <Tag size={15} strokeWidth={2} />
-          List a Vehicle
-        </button>
+      <div className="welcome-content">
+        <span className="welcome-eyebrow">Vehicle Marketplace</span>
+        <h1 className="welcome-headline">
+          Every way<br />
+          to <span>drive.</span>
+        </h1>
+        <p className="welcome-sub">
+          Buy, rent, lease, or bid on your next vehicle — all in one place.
+        </p>
+
+        <div className="welcome-divider" />
+
+        <div className="welcome-type-row">
+          {TYPES.map((t) => (
+            <span className="welcome-type-item" key={t.label}>
+              <span className={`mode-dot ${t.dotClass}`} />
+              {t.label}
+            </span>
+          ))}
+        </div>
+
+        <div className="welcome-cta-group">
+          <button className="action-btn" onClick={() => navigate('/browse')}>
+            Start Browsing
+            <ArrowRight size={16} strokeWidth={2} />
+          </button>
+          <button className="welcome-link" onClick={() => navigate('/sell')}>
+            List a vehicle instead
+          </button>
+        </div>
       </div>
     </div>
   )
