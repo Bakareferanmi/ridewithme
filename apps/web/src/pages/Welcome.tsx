@@ -21,22 +21,14 @@ export function Welcome() {
     <div className="welcome-page">
       <img
         className="welcome-hero-image"
-        src="https://images.unsplash.com/photo-1584345604476-8ec5f452d1f2?w=1200&q=80"
+        src="https://images.unsplash.com/photo-1728060703475-d17c93c0b430?w=1400&q=80"
         alt=""
         aria-hidden="true"
       />
       <div className="welcome-hero-overlay" />
-      <div className="welcome-hero-accent" />
 
-      <div className="welcome-top-row">
-        <div className="welcome-brand">
-          Ride<span>WithMe</span>
-        </div>
-        <div className="welcome-top-tagline">
-          <span>Drive more</span>
-          <span>possibilities</span>
-          <span className="welcome-top-tagline-rule" />
-        </div>
+      <div className="welcome-brand">
+        Ride<span>WithMe</span>
       </div>
 
       <div className="welcome-content">
@@ -51,8 +43,8 @@ export function Welcome() {
 
         <div className="welcome-type-row">
           {TYPES.map(({ label, icon: Icon }) => (
-            <div className="welcome-type-card" key={label}>
-              <Icon size={20} strokeWidth={2} />
+            <div className="welcome-type-item" key={label}>
+              <Icon size={17} strokeWidth={2} />
               <span>{label}</span>
             </div>
           ))}
