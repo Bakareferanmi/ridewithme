@@ -8,8 +8,11 @@ import {
 import {
   Search,
   SlidersHorizontal,
+  Bell,
+  User,
 } from 'lucide-react'
 import { Heart } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { useFavorites } from '../hooks/useFavorites'
 import { useVehicles } from '../hooks/useVehicles'
 import { VehicleCard } from '../components/VehicleCard'
@@ -31,6 +34,7 @@ const SORT_OPTIONS: { label: string; value: SortOption }[] = [
 ]
 
 export function Home() {
+  const navigate = useNavigate()
   const { vehicles: allVehicles } = useVehicles()
   const { isFavorite } = useFavorites()
 
@@ -76,7 +80,21 @@ export function Home() {
   return (
     <div className="app">
       <header className={`header ${isScrolled ? 'header-scrolled' : ''}`}>
-        <h1>Ride<span>WithMe</span></h1>
+        <div className="header-top">
+          <div>
+            <h1>Ride<span>WithMe</span></h1>
+            <p className="header-tagline">Drive your next story</p>
+          </div>
+          <div className="header-actions">
+            <button className="header-icon-btn" aria-label="Notifications">
+              <Bell size={18} strokeWidth={2} />
+              <span className="header-icon-dot" />
+            </button>
+            <button className="header-icon-btn header-avatar-btn" aria-label="Profile" onClick={() => navigate('/profile')}>
+              <User size={17} strokeWidth={2} />
+            </button>
+          </div>
+        </div>
         <div className="search-wrap">
           <Search className="search-icon" size={17} strokeWidth={2} />
           <input
