@@ -12,10 +12,12 @@
     "@rwm/icons": "workspace:*",
     "@rwm/shared": "workspace:*",
     "@rwm/tokens": "workspace:*",
+    "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.0.0",
     "next": "^15.5.0",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-icons": "^5.7.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

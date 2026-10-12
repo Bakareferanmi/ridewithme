@@ -9,7 +9,8 @@ import { Countdown } from './motion';
 import { useCompare, useFavorites } from './Providers';
 import { VehiclePhoto } from './VehiclePhoto';
 
-export function VehicleCard({ vehicle, mode, index = 0 }: { vehicle: Vehicle; mode?: ListingMode; index?: number }) {
+/** Pass `layout={false}` inside a carousel, where the track moves under the card. */
+export function VehicleCard({ vehicle, mode, index = 0, layout = true }: { vehicle: Vehicle; mode?: ListingMode; index?: number; layout?: boolean }) {
   const favorites = useFavorites();
   const compare = useCompare();
   const shown: ListingMode = mode && vehicle.modes.includes(mode) ? mode : defaultMode(vehicle);
@@ -24,7 +25,7 @@ export function VehicleCard({ vehicle, mode, index = 0 }: { vehicle: Vehicle; mo
 
   return (
     <motion.article
-      layout
+      layout={layout}
       className="vcard"
       initial={{ opacity: 0, y: 24, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}

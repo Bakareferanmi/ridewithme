@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { api } from '@/lib/api';
 import { useAsync } from '@/lib/hooks';
+import { Carousel } from './Carousel';
 import { Icon } from './Icon';
 import { EmptyState, ErrorState, VehicleCardSkeleton } from './StateViews';
 import { VehicleCard } from './VehicleCard';
@@ -51,6 +52,16 @@ export function VehicleExplorer() {
   );
   const { data, loading, error, reload } = useAsync(() => api.vehicles.list(query), [query]);
   const activeFilters = body.length + fuel.length + (maxPrice < MAX_PRICE ? 1 : 0);
+
+  // One swipeable row per way of getting a car. Picking a tab narrows this to a single row.
+  const sections = useMemo(
+    () =>
+      listingModes
+        .filter((m) => mode === 'all' || m.id === mode)
+        .map((m) => ({ ...m, items: (data ?? []).filter((v) => v.modes.includes(m.id)) }))
+        .filter((s) => s.items.length > 0),
+    [data, mode],
+  );
 
   const reset = () => {
     setBody([]);
@@ -139,9 +150,18 @@ export function VehicleExplorer() {
         {error ? (
           <ErrorState onRetry={reload} />
         ) : loading && !data ? (
-          <div className="grid">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <VehicleCardSkeleton key={i} />
+          <div className="sections" aria-hidden="true">
+            {[0, 1].map((row) => (
+              <div key={row} className="carousel">
+                <div className="skeleton" style={{ height: 22, width: 120, marginBottom: 16 }} />
+                <div className="carousel-skeleton">
+                  {[0, 1, 2].map((i) => (
+                    <div key={i} className="carousel-slide">
+                      <VehicleCardSkeleton />
+                    </div>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         ) : data && data.length === 0 ? (
@@ -155,13 +175,15 @@ export function VehicleExplorer() {
             }
           />
         ) : (
-          <motion.div layout className="grid" style={{ opacity: loading ? 0.6 : 1, transition: 'opacity .2s' }}>
-            <AnimatePresence mode="popLayout">
-              {data?.map((v, i) => (
-                <VehicleCard key={v.id} vehicle={v} mode={mode === 'all' ? undefined : mode} index={i} />
-              ))}
-            </AnimatePresence>
-          </motion.div>
+          <div className="sections" style={{ opacity: loading ? 0.6 : 1, transition: 'opacity .2s' }}>
+            {sections.map((s) => (
+              <Carousel key={s.id} label="vehicles" title={s.label} meta={`${s.blurb} · ${s.items.length} vehicle${s.items.length === 1 ? '' : 's'}`}>
+                {s.items.map((v, i) => (
+                  <VehicleCard key={v.id} vehicle={v} mode={s.id} index={i} layout={false} />
+                ))}
+              </Carousel>
+            ))}
+          </div>
         )}
       </section>
     </div>
