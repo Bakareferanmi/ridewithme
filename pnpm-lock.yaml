@@ -7,44 +7,7 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@rwm/icons':
-        specifier: workspace:*
-        version: link:packages/icons
-      '@rwm/shared':
-        specifier: workspace:*
-        version: link:packages/shared
-      '@rwm/tokens':
-        specifier: workspace:*
-        version: link:packages/tokens
-      embla-carousel-react:
-        specifier: ^8.6.0
-        version: 8.6.0(react@19.2.3)
-      framer-motion:
-        specifier: ^12.0.0
-        version: 12.43.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      next:
-        specifier: ^15.5.0
-        version: 15.5.27(@types/node@22.20.5)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      react:
-        specifier: 19.2.3
-        version: 19.2.3
-      react-dom:
-        specifier: 19.2.3
-        version: 19.2.3(react@19.2.3)
-      react-icons:
-        specifier: ^5.7.0
-        version: 5.7.0(react@19.2.3)
     devDependencies:
-      '@types/node':
-        specifier: ^22.0.0
-        version: 22.20.5
-      '@types/react':
-        specifier: ~19.2.18
-        version: 19.2.18
-      '@types/react-dom':
-        specifier: ~19.2.3
-        version: 19.2.7(@types/react@19.2.18)
       typescript:
         specifier: ~5.9.0
         version: 5.9.3
@@ -163,7 +126,44 @@ importers:
         version: 6.0.3
 
   apps/web:
+    dependencies:
+      '@rwm/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@rwm/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      '@rwm/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
+      embla-carousel-react:
+        specifier: ^8.6.0
+        version: 8.6.0(react@19.2.3)
+      framer-motion:
+        specifier: ^12.0.0
+        version: 12.43.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      next:
+        specifier: ^15.5.0
+        version: 15.5.27(@types/node@22.20.5)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react:
+        specifier: 19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: 19.2.3
+        version: 19.2.3(react@19.2.3)
+      react-icons:
+        specifier: ^5.7.0
+        version: 5.7.0(react@19.2.3)
     devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.5
+      '@types/react':
+        specifier: ~19.2.18
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: ~19.2.3
+        version: 19.2.7(@types/react@19.2.18)
       typescript:
         specifier: ~5.9.0
         version: 5.9.3
