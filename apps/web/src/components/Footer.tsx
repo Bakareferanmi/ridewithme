@@ -5,10 +5,9 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="container footer-inner">
-        <div className="brand">
+        <Link href="/" className="brand" aria-label="RideWithMe home">
           <Image src="/logo.png" alt="" width={28} height={28} />
-          <span>RideWithMe</span>
-        </div>
+        </Link>
         <p className="faint t-label">Buy, rent, lease and bid on inspected vehicles.</p>
         <nav className="footer-links" aria-label="Footer">
           <Link href="/vehicles">Marketplace</Link>

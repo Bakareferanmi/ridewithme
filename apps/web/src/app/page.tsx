@@ -1,6 +1,7 @@
 import { listingModes, vehicles } from '@rwm/shared';
 import type { IconName } from '@rwm/icons';
 import Link from 'next/link';
+import { Carousel } from '@/components/Carousel';
 import { Hero } from '@/components/Hero';
 import { Icon } from '@/components/Icon';
 import { Reveal } from '@/components/motion';
@@ -44,21 +45,22 @@ export default function HomePage() {
 
       <section className="container section">
         <Reveal>
-          <div className="section-head">
-            <div>
-              <span className="eyebrow">Featured</span>
-              <h2 className="t-h2">Fresh on the marketplace</h2>
-            </div>
-            <Link href="/vehicles" className="btn btn-ghost">
-              See all <Icon name="arrowRight" size={16} />
-            </Link>
-          </div>
+          <Carousel
+            label="featured vehicles"
+            size="lg"
+            eyebrow="Featured"
+            title="Fresh on the marketplace"
+            action={
+              <Link href="/vehicles" className="btn btn-ghost">
+                See all <Icon name="arrowRight" size={16} />
+              </Link>
+            }
+          >
+            {vehicles.slice(0, 8).map((v, i) => (
+              <VehicleCard key={v.id} vehicle={v} index={i} layout={false} />
+            ))}
+          </Carousel>
         </Reveal>
-        <div className="grid">
-          {vehicles.slice(0, 6).map((v, i) => (
-            <VehicleCard key={v.id} vehicle={v} index={i} />
-          ))}
-        </div>
       </section>
 
       <section id="how" className="container section">

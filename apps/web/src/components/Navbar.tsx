@@ -1,21 +1,44 @@
 'use client';
 
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
+import { AnimatePresence, motion, useMotionValueEvent, useScroll, type Variants } from 'framer-motion';
 import { motionTokens } from '@rwm/tokens';
 import { initials } from '@rwm/shared';
+import type { IconName } from '@rwm/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Icon } from './Icon';
 import { ThemeToggle } from './ThemeToggle';
 import { useFavorites, useSession } from './Providers';
 
-const links = [
-  { href: '/vehicles', label: 'Marketplace' },
-  { href: '/auctions', label: 'Auctions' },
-  { href: '/#how', label: 'How it works' },
+const links: { href: string; label: string; hint: string; icon: IconName }[] = [
+  { href: '/vehicles', label: 'Marketplace', hint: 'Buy, rent or lease', icon: 'car' },
+  { href: '/auctions', label: 'Auctions', hint: 'Bid live, win fair', icon: 'auction' },
+  { href: '/#how', label: 'How it works', hint: 'From first look to the keys', icon: 'route' },
 ];
+
+const MENU_ID = 'mobile-menu';
+
+const sheet: Variants = {
+  hidden: { opacity: 0, y: -12, transition: { duration: 0.18, ease: motionTokens.ease } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.28, ease: motionTokens.ease, staggerChildren: 0.06, delayChildren: 0.05 } },
+};
+const sheetItem: Variants = {
+  hidden: { opacity: 0, x: -16 },
+  show: { opacity: 1, x: 0, transition: motionTokens.spring },
+};
+
+/** Three bars that morph into a cross. */
+function Burger({ open }: { open: boolean }) {
+  return (
+    <span className="burger" aria-hidden="true">
+      <motion.span className="burger-bar" initial={false} animate={open ? { y: 0, rotate: 45 } : { y: -6, rotate: 0 }} transition={motionTokens.spring} />
+      <motion.span className="burger-bar" initial={false} animate={open ? { opacity: 0, scaleX: 0.2 } : { opacity: 1, scaleX: 1 }} transition={{ duration: 0.18 }} />
+      <motion.span className="burger-bar" initial={false} animate={open ? { y: 0, rotate: -45 } : { y: 6, rotate: 0 }} transition={motionTokens.spring} />
+    </span>
+  );
+}
 
 export function Navbar() {
   const pathname = usePathname();
@@ -27,12 +50,37 @@ export function Navbar() {
 
   useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 12));
 
+  // Close after navigating.
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // While open: Escape closes, the page behind does not scroll, and growing past the mobile breakpoint closes.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    const mq = window.matchMedia('(min-width: 861px)');
+    const onChange = () => {
+      if (mq.matches) setOpen(false);
+    };
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    mq.addEventListener('change', onChange);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener('keydown', onKey);
+      mq.removeEventListener('change', onChange);
+    };
+  }, [open]);
+
   return (
-    <header className={`nav ${scrolled ? 'is-scrolled' : ''}`}>
+    <header className={`nav ${scrolled ? 'is-scrolled' : ''} ${open ? 'is-open' : ''}`}>
       <div className="container nav-inner">
         <Link href="/" className="brand" aria-label="RideWithMe home">
           <Image src="/logo.png" alt="" width={36} height={36} priority />
-          <span>RideWithMe</span>
         </Link>
 
         <nav className="nav-links" aria-label="Main">
@@ -75,32 +123,54 @@ export function Navbar() {
               Sign in
             </Link>
           )}
-          <button className="btn btn-secondary btn-icon btn-sm nav-burger" aria-label="Menu" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
-            <Icon name={open ? 'close' : 'menu'} size={18} />
+          <button
+            type="button"
+            className={`btn btn-secondary btn-icon btn-sm nav-burger ${open ? 'is-open' : ''}`}
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            aria-controls={MENU_ID}
+            onClick={() => setOpen((o) => !o)}
+          >
+            <Burger open={open} />
           </button>
         </div>
       </div>
 
       <AnimatePresence>
         {open ? (
-          <motion.div
-            className="nav-sheet"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: motionTokens.ease }}
-          >
-            <div className="container nav-sheet-inner">
-              {links.map((l, i) => (
-                <motion.div key={l.href} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 * i }}>
-                  <Link href={l.href} className="nav-sheet-link" onClick={() => setOpen(false)}>
-                    {l.label}
-                    <Icon name="chevronRight" size={18} />
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+          <>
+            <motion.div
+              key="backdrop"
+              className="nav-backdrop"
+              aria-hidden="true"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setOpen(false)}
+            />
+            <motion.div key="sheet" id={MENU_ID} className="nav-sheet" variants={sheet} initial="hidden" animate="show" exit="hidden">
+              <nav className="container nav-sheet-inner" aria-label="Menu">
+                {links.map((l) => {
+                  const active = l.href.startsWith('/#') ? false : pathname.startsWith(l.href);
+                  return (
+                    <motion.div key={l.href} variants={sheetItem}>
+                      <Link href={l.href} className={`nav-sheet-link ${active ? 'is-active' : ''}`} onClick={() => setOpen(false)}>
+                        <span className="nav-sheet-icon">
+                          <Icon name={l.icon} size={20} />
+                        </span>
+                        <span className="nav-sheet-text">
+                          <span className="nav-sheet-label">{l.label}</span>
+                          <span className="nav-sheet-hint">{l.hint}</span>
+                        </span>
+                        <Icon name="chevronRight" size={18} className="nav-sheet-arrow" />
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </nav>
+            </motion.div>
+          </>
         ) : null}
       </AnimatePresence>
     </header>

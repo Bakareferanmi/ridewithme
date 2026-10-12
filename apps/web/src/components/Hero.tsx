@@ -42,9 +42,6 @@ export function Hero() {
   return (
     <section className="hero container">
       <motion.div className="hero-copy" variants={container} initial="hidden" animate="show">
-        <motion.span variants={item} className="eyebrow hero-eyebrow">
-          Buy · Rent · Lease · Bid
-        </motion.span>
         <motion.h1 variants={item} className="t-display">
           Drive what
           <br />
