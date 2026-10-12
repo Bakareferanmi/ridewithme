@@ -14,13 +14,13 @@
     "@rwm/shared": "workspace:*",
     "@rwm/tokens": "workspace:*",
     "framer-motion": "^12.0.0",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
-    "@types/react": "~19.1.0",
-    "@types/react-dom": "~19.1.0",
+    "@types/react": "~19.2.18",
+    "@types/react-dom": "~19.2.3",
     "@vitejs/plugin-react": "^4.3.4",
     "typescript": "~5.9.0",
     "vite": "^6.0.0"

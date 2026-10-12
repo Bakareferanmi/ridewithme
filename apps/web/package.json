@@ -1,26 +1,19 @@
 {
-  "name": "@rwm/web",
-  "version": "0.1.0",
+  "name": "ridewithme",
   "private": true,
+  "version": "0.1.0",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@rwm/icons": "workspace:*",
-    "@rwm/shared": "workspace:*",
-    "@rwm/tokens": "workspace:*",
-    "framer-motion": "^12.0.0",
-    "next": "^15.5.0",
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "dev:web": "pnpm --filter @rwm/web dev",
+    "dev:admin": "pnpm --filter @rwm/admin dev",
+    "dev:mobile": "pnpm --filter @rwm/mobile start",
+    "build:web": "pnpm --filter @rwm/web build",
+    "build:admin": "pnpm --filter @rwm/admin build",
+    "typecheck": "pnpm -r --if-present typecheck"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
-    "@types/react": "~19.1.0",
-    "@types/react-dom": "~19.1.0",
     "typescript": "~5.9.0"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
