@@ -1,7 +1,7 @@
 import { icons, iconStrokeWidth, iconViewBox, type IconName } from '@rwm/icons';
-import type { SVGProps } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 
-interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'name' | 'color'> {
+interface IconProps extends Omit<ComponentPropsWithoutRef<'svg'>, 'name' | 'color'> {
   name: IconName;
   size?: number;
   color?: string;
