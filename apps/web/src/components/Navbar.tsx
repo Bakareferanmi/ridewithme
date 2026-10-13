@@ -42,7 +42,7 @@ export function Navbar() {
   }, [open]);
 
   return (
-    <header className={`nav ${scrolled ? 'is-scrolled' : ''}`}>
+    <header className={`nav ${scrolled ? 'is-scrolled' : ''} ${pathname === '/' ? 'on-hero' : ''}`}>
       <div className="container nav-inner">
         <Link href="/" className="brand" aria-label="RideWithMe home">
           <Image src="/logo.png" alt="" width={36} height={36} priority />
