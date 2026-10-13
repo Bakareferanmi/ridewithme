@@ -2,6 +2,7 @@ import { listingModes, vehicles } from '@rwm/shared';
 import type { IconName } from '@rwm/icons';
 import Link from 'next/link';
 import { Hero } from '@/components/Hero';
+import { Carousel } from '@/components/Carousel';
 import { Icon } from '@/components/Icon';
 import { Reveal } from '@/components/motion';
 import { VehicleCard } from '@/components/VehicleCard';
@@ -54,11 +55,13 @@ export default function HomePage() {
             </Link>
           </div>
         </Reveal>
-        <div className="grid">
+        <Carousel label="Featured vehicles" autoPlay>
           {vehicles.slice(0, 6).map((v, i) => (
-            <VehicleCard key={v.id} vehicle={v} index={i} />
+            <div key={v.id} className="slide">
+              <VehicleCard vehicle={v} index={i} />
+            </div>
           ))}
-        </div>
+        </Carousel>
       </section>
 
       <section id="how" className="container section">

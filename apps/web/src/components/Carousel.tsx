@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { Icon } from './Icon';
 
 /** Swipe carousel: native scroll-snap (touch swipe), mouse drag, arrow buttons, progress bar. */
-export function Carousel({ children, label }: { children: ReactNode; label: string }) {
+export function Carousel({ children, label, autoPlay = true }: { children: ReactNode; label: string; autoPlay?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const drag = useRef({ down: false, x: 0, left: 0, moved: false });
   const [progress, setProgress] = useState(0);
@@ -30,6 +30,20 @@ export function Carousel({ children, label }: { children: ReactNode; label: stri
     return () => ro.disconnect();
   }, [update, children]);
 
+  const paused = useRef(false);
+  useEffect(() => {
+    if (!autoPlay || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = setInterval(() => {
+      const el = ref.current;
+      if (!el || paused.current || drag.current.down) return;
+      const max = el.scrollWidth - el.clientWidth;
+      if (max <= 0) return;
+      if (el.scrollLeft >= max - 4) el.scrollTo({ left: 0, behavior: 'smooth' });
+      else el.scrollBy({ left: el.clientWidth * 0.5, behavior: 'smooth' });
+    }, 3800);
+    return () => clearInterval(id);
+  }, [autoPlay]);
+
   const page = (dir: 1 | -1) => ref.current?.scrollBy({ left: dir * ref.current.clientWidth * 0.85, behavior: 'smooth' });
 
   const onPointerDown = (e: React.PointerEvent) => {
@@ -53,7 +67,7 @@ export function Carousel({ children, label }: { children: ReactNode; label: stri
   };
 
   return (
-    <div className="carousel" role="region" aria-roledescription="carousel" aria-label={label}>
+    <div className="carousel" onMouseEnter={() => (paused.current = true)} onMouseLeave={() => (paused.current = false)} onTouchStart={() => (paused.current = true)} onFocus={() => (paused.current = true)} onBlur={() => (paused.current = false)} role="region" aria-roledescription="carousel" aria-label={label}>
       <div
         ref={ref}
         className={`carousel-track ${dragging ? 'is-dragging' : ''}`}

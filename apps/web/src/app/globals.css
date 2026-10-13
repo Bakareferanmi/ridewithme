@@ -297,3 +297,10 @@
 .nav-scrim { position: fixed; inset: 0; top: 64px; background: var(--color-scrim); backdrop-filter: blur(4px); z-index: -1; }
 .nav-sheet-link .nav-sheet-ico { display: inline-flex; align-items: center; gap: 12px; }
 .nav-sheet-link .nav-sheet-ico > span:first-child { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--color-surface-2); color: var(--color-orange-500); }
+
+/* ---- footer base + legal ---- */
+.footer-base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--color-border); }
+.footer-credit { color: var(--color-orange-500); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.footer-links { flex-wrap: wrap; }
+.legal-body { max-width: 720px; display: flex; flex-direction: column; gap: 10px; }
+.legal-body h2 { margin-top: 18px; }
