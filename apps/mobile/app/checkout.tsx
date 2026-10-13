@@ -9,6 +9,7 @@ import type { IconName } from '@rwm/icons';
 import { Icon } from '../src/Icon';
 import { Button, Input, PressableScale, T, useShake } from '../src/ui';
 import { useStore } from '../src/store';
+import { layout } from '../src/theme';
 import { useColors } from '../src/ThemeProvider';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -91,7 +92,7 @@ export default function Checkout() {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg, paddingTop: insets.top }}>
-      <View style={{ paddingHorizontal: 20, paddingVertical: 12, gap: 16 }}>
+      <View style={{ paddingHorizontal: layout.gutter, paddingVertical: 16, gap: 20 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
           <PressableScale onPress={() => (step ? setStep(step - 1) : router.back())} accessibilityRole="button" accessibilityLabel="Back" style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name="arrowLeft" size={20} /></PressableScale>
           <T v="h3">Checkout</T>
@@ -99,10 +100,10 @@ export default function Checkout() {
         <View style={{ height: 3, borderRadius: 2, backgroundColor: colors.surface3, overflow: 'hidden' }}><Animated.View style={[{ height: 3, backgroundColor: colors.orange500 }, bar]} /></View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>{STEPS.map((s, i) => <T key={s} v="caption" color={i <= step ? colors.text : colors.text3}>{i + 1}. {s}</T>)}</View>
       </View>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 8, gap: 16, paddingBottom: 130 }} keyboardShouldPersistTaps="handled">
-        <Animated.View key={step} entering={FadeInRight.springify().damping(20)} exiting={FadeOutLeft.duration(120)} style={{ gap: 16 }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: layout.gutter, paddingTop: 12, gap: layout.item, paddingBottom: 140 }} keyboardShouldPersistTaps="handled">
+        <Animated.View key={step} entering={FadeInRight.springify().damping(20)} exiting={FadeOutLeft.duration(120)} style={{ gap: layout.item }}>
           {step === 0 && (
-            <Animated.View style={[{ gap: 16 }, shake.style]}>
+            <Animated.View style={[{ gap: layout.item }, shake.style]}>
               <Input label="Full name" value={form.fullName} onChangeText={(t) => setForm({ ...form, fullName: t })} error={errors.fullName} autoComplete="name" />
               <Input label="Phone" value={form.phone} onChangeText={(t) => setForm({ ...form, phone: t })} error={errors.phone} keyboardType="phone-pad" placeholder="080 1234 5678" />
               <Input label="Email" value={form.email} onChangeText={(t) => setForm({ ...form, email: t })} error={errors.email} keyboardType="email-address" autoCapitalize="none" />
@@ -110,25 +111,25 @@ export default function Checkout() {
             </Animated.View>
           )}
           {step === 1 && METHODS.map((mm) => (
-            <PressableScale key={mm.id} onPress={() => setMethod(mm.id)} accessibilityRole="radio" accessibilityState={{ selected: method === mm.id }} style={{ flexDirection: 'row', alignItems: 'center', gap: 14, padding: 14, borderRadius: 16, backgroundColor: method === mm.id ? colors.orangeTint : colors.surface1, borderWidth: 1, borderColor: method === mm.id ? colors.orange500 : colors.border }}>
+            <PressableScale key={mm.id} onPress={() => setMethod(mm.id)} accessibilityRole="radio" accessibilityState={{ selected: method === mm.id }} style={{ flexDirection: 'row', alignItems: 'center', gap: 14, padding: 18, borderRadius: 20, backgroundColor: method === mm.id ? colors.orangeTint : colors.surface1, borderWidth: 1, borderColor: method === mm.id ? colors.orange500 : colors.border }}>
               <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name={mm.icon} size={20} color={colors.orange500} /></View>
               <View style={{ flex: 1 }}><T v="title">{mm.label}</T><T v="label" color={colors.text2}>{mm.sub}</T></View>
               {method === mm.id && <Animated.View entering={ZoomIn}><Icon name="checkCircle" size={20} color={colors.orange500} /></Animated.View>}
             </PressableScale>
           ))}
           {step === 2 && (
-            <View style={{ padding: 16, borderRadius: 18, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 12 }}>
+            <View style={{ padding: 20, borderRadius: 24, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 14 }}>
               <T v="title">{vehicleName(v)}</T>
               {[['Type', modeLabel(m)], ['Name', form.fullName], ['Phone', form.phone], ['Payment', METHODS.find((x) => x.id === method)?.label ?? '']].map(([k, val]) => (
                 <View key={k} style={{ flexDirection: 'row', justifyContent: 'space-between' }}><T color={colors.text3}>{k}</T><T>{val}</T></View>
               ))}
               <View style={{ height: 1, backgroundColor: colors.border }} />
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}><T v="title">Total today</T><T v="h3" color={colors.orange400}>{formatNaira(amount)}</T></View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}><T v="title">Total today</T><T v="h3">{formatNaira(amount)}</T></View>
             </View>
           )}
         </Animated.View>
       </ScrollView>
-      <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 20, paddingTop: 14, paddingBottom: insets.bottom + 14, backgroundColor: colors.surface1, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.border }}>
+      <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: layout.gutter, paddingTop: 16, paddingBottom: insets.bottom + 16, backgroundColor: colors.surface1, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.border }}>
         <Button label={step === 2 ? `Pay ${formatNaira(amount)}` : 'Continue'} onPress={next} loading={busy} />
       </View>
     </View>

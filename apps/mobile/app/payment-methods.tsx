@@ -4,6 +4,7 @@ import type { IconName } from '@rwm/icons';
 import { Icon } from '../src/Icon';
 import { PressableScale, ScreenHeader, T } from '../src/ui';
 import { useStore } from '../src/store';
+import { layout } from '../src/theme';
 import { useColors } from '../src/ThemeProvider';
 
 const METHODS: { id: PaymentMethod; label: string; sub: string; icon: IconName }[] = [
@@ -18,13 +19,13 @@ export default function PaymentMethods() {
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
       <ScreenHeader title="Payment methods" />
-      <View style={{ padding: 20, gap: 16 }}>
+      <View style={{ padding: layout.gutter, gap: 24 }}>
         <T color={colors.text2}>Choose the method we select first at checkout. You can still change it for any order.</T>
-        <View style={{ borderRadius: 20, backgroundColor: colors.surface1, overflow: 'hidden' }}>
+        <View style={{ borderRadius: 24, backgroundColor: colors.surface1, overflow: 'hidden' }}>
           {METHODS.map((m, i) => {
             const on = m.id === defaultPayment;
             return (
-              <PressableScale key={m.id} onPress={() => setDefaultPayment(m.id)} accessibilityRole="radio" accessibilityState={{ selected: on }} accessibilityLabel={m.label} style={{ flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 16, paddingHorizontal: 18, borderTopWidth: i ? StyleSheet.hairlineWidth : 0, borderTopColor: colors.border }}>
+              <PressableScale key={m.id} onPress={() => setDefaultPayment(m.id)} accessibilityRole="radio" accessibilityState={{ selected: on }} accessibilityLabel={m.label} style={{ flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 20, paddingHorizontal: 20, borderTopWidth: i ? StyleSheet.hairlineWidth : 0, borderTopColor: colors.border }}>
                 <Icon name={m.icon} size={20} color={on ? colors.orange500 : colors.text2} />
                 <View style={{ flex: 1 }}>
                   <T>{m.label}</T>

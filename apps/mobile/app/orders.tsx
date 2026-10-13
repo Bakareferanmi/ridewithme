@@ -5,6 +5,7 @@ import { createApiClient, formatNaira, modeLabel, type Order, type OrderStatus }
 import { Badge, Button, EmptyState, PressableScale, ScreenHeader, Skeleton, T } from '../src/ui';
 import { Icon } from '../src/Icon';
 import { useStore } from '../src/store';
+import { layout } from '../src/theme';
 import { useColors } from '../src/ThemeProvider';
 
 const STATUS: Record<OrderStatus, { label: string; tone: 'orange' | 'success' | 'warning' | 'info' }> = {
@@ -39,23 +40,23 @@ export default function Orders() {
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
       <ScreenHeader title="My orders" />
       {!session ? (
-        <View style={{ padding: 20, gap: 12 }}>
+        <View style={{ padding: layout.gutter, gap: 16 }}>
           <EmptyState icon="package" title="Sign in to see your orders" body="Your purchases, rentals, leases and auction wins show up here." />
           <Button label="Sign in" onPress={() => router.replace('/login')} />
         </View>
       ) : failed ? (
-        <View style={{ padding: 20, gap: 12 }}>
+        <View style={{ padding: layout.gutter, gap: 16 }}>
           <EmptyState icon="alert" title="Couldn't load orders" body="Check your connection and try again." />
           <Button label="Try again" onPress={() => setAttempt((n) => n + 1)} />
         </View>
       ) : !orders ? (
-        <View style={{ padding: 20, gap: 12 }}>{[0, 1].map((i) => <Skeleton key={i} height={96} radius={20} />)}</View>
+        <View style={{ padding: layout.gutter, gap: 16 }}>{[0, 1].map((i) => <Skeleton key={i} height={96} radius={20} />)}</View>
       ) : orders.length === 0 ? (
         <EmptyState icon="package" title="No orders yet" body="When you buy, rent or lease a vehicle it will show up here." />
       ) : (
-        <ScrollView contentContainerStyle={{ padding: 20, gap: 12 }}>
+        <ScrollView contentContainerStyle={{ padding: layout.gutter, gap: 16 }}>
           {orders.map((o) => (
-            <PressableScale key={o.id} onPress={() => router.push({ pathname: '/vehicle/[id]', params: { id: o.vehicleId } })} accessibilityRole="button" accessibilityLabel={`${o.vehicleName}, ${STATUS[o.status].label}`} style={{ borderRadius: 20, backgroundColor: colors.surface1, padding: 16, gap: 10 }}>
+            <PressableScale key={o.id} onPress={() => router.push({ pathname: '/vehicle/[id]', params: { id: o.vehicleId } })} accessibilityRole="button" accessibilityLabel={`${o.vehicleName}, ${STATUS[o.status].label}`} style={{ borderRadius: 24, backgroundColor: colors.surface1, padding: 20, gap: 14 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
                 <T v="title" style={{ flex: 1 }} numberOfLines={1}>{o.vehicleName}</T>
                 <Icon name="chevronRight" size={18} color={colors.text3} />

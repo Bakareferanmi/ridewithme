@@ -23,3 +23,6 @@ export const VARIANTS = {
 export type Variant = keyof typeof VARIANTS;
 
 export const EASE = { x1: 0.22, y1: 1, x2: 0.36, y2: 1 };
+
+/** One spacing scale for every page: side gutter, space below the status bar, gap between sections, room for the tab bar. */
+export const layout = { gutter: 24, top: 24, section: 32, item: 20, tabBar: 132 } as const;

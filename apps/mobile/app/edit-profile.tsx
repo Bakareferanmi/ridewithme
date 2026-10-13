@@ -5,6 +5,7 @@ import Animated from 'react-native-reanimated';
 import { fieldErrors, profileSchema } from '@rwm/shared';
 import { Avatar, Button, Input, ScreenHeader, T, useShake } from '../src/ui';
 import { useStore } from '../src/store';
+import { layout } from '../src/theme';
 import { useColors } from '../src/ThemeProvider';
 
 export default function EditProfile() {
@@ -40,12 +41,12 @@ export default function EditProfile() {
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: colors.bg }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScreenHeader title="Edit profile" />
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 8, paddingBottom: 40, gap: 24 }} keyboardShouldPersistTaps="handled">
+      <ScrollView contentContainerStyle={{ paddingHorizontal: layout.gutter, paddingTop: 12, paddingBottom: 48, gap: layout.section }} keyboardShouldPersistTaps="handled">
         <View style={{ alignItems: 'center', gap: 8 }}>
           <Avatar name={form.name || session.name} photoUrl={session.photoUrl} size={88} />
           {googleManaged && <T v="caption" color={colors.text3}>Photo comes from your Google account.</T>}
         </View>
-        <Animated.View style={[{ gap: 18 }, shake.style]}>
+        <Animated.View style={[{ gap: layout.item }, shake.style]}>
           <Input label="Full name" value={form.name} onChangeText={set('name')} autoComplete="name" error={errors.name} />
           <View style={{ gap: 6 }}>
             <Input label="Email" value={form.email} onChangeText={set('email')} editable={!googleManaged} autoCapitalize="none" keyboardType="email-address" autoComplete="email" error={errors.email} />

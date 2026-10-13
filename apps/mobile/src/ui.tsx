@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { initials } from '@rwm/shared';
 import type { IconName } from '@rwm/icons';
 import { Icon } from './Icon';
-import { fonts, radius, VARIANTS, type Variant, type ColorPalette } from './theme';
+import { fonts, layout, radius, VARIANTS, type Variant, type ColorPalette } from './theme';
 import { useColors, useThemedStyles } from './ThemeProvider';
 
 const useS = () => useThemedStyles(makeStyles);
@@ -44,13 +44,13 @@ export function Button({ label, onPress, variant = 'primary', loading, disabled,
   );
 }
 
-export function Input({ label, error, ...rest }: TextInputProps & { label: string; error?: string }) {
+export function Input({ label, error, hideLabel, ...rest }: TextInputProps & { label: string; error?: string; hideLabel?: boolean }) {
   const s = useS();
   const colors = useColors();
   const [focus, setFocus] = useState(false);
   return (
-    <View style={{ gap: 6 }}>
-      <T v="label" color={colors.text2}>{label}</T>
+    <View style={{ gap: 8 }}>
+      {!hideLabel && <T v="label" color={colors.text2}>{label}</T>}
       <TextInput
         {...rest}
         accessibilityLabel={label}
@@ -142,7 +142,7 @@ export function ScreenHeader({ title }: { title: string }) {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   return (
-    <View style={{ paddingTop: insets.top + 8, paddingHorizontal: 20, paddingBottom: 12, flexDirection: 'row', alignItems: 'center', gap: 14, backgroundColor: colors.bg }}>
+    <View style={{ paddingTop: insets.top + 12, paddingHorizontal: layout.gutter, paddingBottom: 16, flexDirection: 'row', alignItems: 'center', gap: 16, backgroundColor: colors.bg }}>
       <PressableScale onPress={() => (router.canGoBack() ? router.back() : router.replace('/(tabs)/profile'))} accessibilityRole="button" accessibilityLabel="Back" style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}>
         <Icon name="arrowLeft" size={20} />
       </PressableScale>
@@ -161,16 +161,16 @@ export function Avatar({ name, photoUrl, size = 52 }: { name: string; photoUrl?:
 }
 
 const makeStyles = (colors: ColorPalette) => StyleSheet.create({
-  btn: { minHeight: 48, borderRadius: radius.pill, paddingHorizontal: 24, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
+  btn: { minHeight: 54, borderRadius: radius.pill, paddingHorizontal: 28, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
   btnPrimary: { backgroundColor: colors.orange500 },
   btnSecondary: { backgroundColor: colors.surface2 },
-  input: { minHeight: 48, borderRadius: radius.md, borderWidth: 1, borderColor: 'transparent', backgroundColor: colors.surface2, paddingHorizontal: 16, color: colors.text, fontFamily: fonts.regular, fontSize: 15 },
-  chip: { height: 34, paddingHorizontal: 14, borderRadius: radius.pill, borderWidth: 1, borderColor: 'transparent', backgroundColor: colors.surface2, justifyContent: 'center' },
+  input: { minHeight: 54, borderRadius: radius.md, borderWidth: 1, borderColor: 'transparent', backgroundColor: colors.surface2, paddingHorizontal: 16, color: colors.text, fontFamily: fonts.regular, fontSize: 15 },
+  chip: { height: 38, paddingHorizontal: 16, borderRadius: radius.pill, borderWidth: 1, borderColor: 'transparent', backgroundColor: colors.surface2, justifyContent: 'center' },
   chipActive: { borderColor: colors.orange500, backgroundColor: colors.orangeTint },
   seg: { padding: 3, borderRadius: radius.pill, backgroundColor: colors.surface2 },
   segInd: { position: 'absolute', top: 0, bottom: 0, left: 0, borderRadius: radius.pill, backgroundColor: colors.surface1, shadowColor: '#000', shadowOpacity: 0.12, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 2 },
   segBtn: { flex: 1, height: 34, alignItems: 'center', justifyContent: 'center' },
   badge: { alignSelf: 'flex-start', paddingHorizontal: 9, height: 22, borderRadius: radius.pill, justifyContent: 'center' },
-  empty: { alignItems: 'center', gap: 10, padding: 32 },
+  empty: { alignItems: 'center', gap: 12, padding: 40 },
   emptyIcon: { width: 56, height: 56, borderRadius: 28, backgroundColor: colors.orangeTint, alignItems: 'center', justifyContent: 'center', marginBottom: 6 },
 });

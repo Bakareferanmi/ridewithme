@@ -9,7 +9,7 @@ import { PressableScale, T } from '../../src/ui';
 import { VehicleCard } from '../../src/VehicleCard';
 import { useStore } from '../../src/store';
 import { firstName, useGreeting } from '../../src/greeting';
-import { radius } from '../../src/theme';
+import { layout, radius } from '../../src/theme';
 import { useColors } from '../../src/ThemeProvider';
 
 const ICON: Record<ListingMode, IconName> = { buy: 'car', rent: 'key', lease: 'lease', auction: 'auction' };
@@ -21,13 +21,13 @@ export default function Home() {
   const { session } = useStore();
   const greeting = useGreeting();
   return (
-    <ScrollView contentContainerStyle={{ paddingTop: insets.top + 16, paddingHorizontal: 20, paddingBottom: 124, gap: 28 }} showsVerticalScrollIndicator={false}>
-      <Animated.View entering={FadeInDown.springify()} style={{ gap: 4 }}>
+    <ScrollView contentContainerStyle={{ paddingTop: insets.top + layout.top, paddingHorizontal: layout.gutter, paddingBottom: layout.tabBar, gap: layout.section }} showsVerticalScrollIndicator={false}>
+      <Animated.View entering={FadeInDown.springify()} style={{ gap: 8 }}>
         <T v="label">{session ? `${greeting}, ${firstName(session.name)}` : greeting}</T>
         <T v="h1">Find your next ride</T>
       </Animated.View>
       <Animated.View entering={FadeInDown.delay(80).springify()}>
-        <PressableScale onPress={() => router.push('/explore')} accessibilityRole="search" accessibilityLabel="Search vehicles" style={{ height: 48, borderRadius: radius.pill, backgroundColor: colors.surface2, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 18 }}>
+        <PressableScale onPress={() => router.push('/explore')} accessibilityRole="search" accessibilityLabel="Search vehicles" style={{ height: 54, borderRadius: radius.pill, backgroundColor: colors.surface2, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 20 }}>
           <Icon name="search" size={18} color={colors.text3} />
           <T color={colors.text3}>Search make, model or city</T>
         </PressableScale>
@@ -42,7 +42,7 @@ export default function Home() {
           </Animated.View>
         ))}
       </View>
-      <View style={{ gap: 16 }}>
+      <View style={{ gap: layout.item }}>
         <T v="h3">Featured</T>
         {vehicles.slice(0, 4).map((v, i) => <VehicleCard key={v.id} vehicle={v} index={i} />)}
       </View>

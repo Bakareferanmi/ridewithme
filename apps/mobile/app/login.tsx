@@ -7,6 +7,7 @@ import { Button, Input, PressableScale, T, useShake } from '../src/ui';
 import { Icon } from '../src/Icon';
 import { useStore } from '../src/store';
 import { GoogleButton } from '../src/GoogleButton';
+import { layout } from '../src/theme';
 import { useColors } from '../src/ThemeProvider';
 
 export default function Login() {
@@ -32,7 +33,7 @@ export default function Login() {
 
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: colors.bg }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 20, paddingBottom: 32, gap: 24 }} keyboardShouldPersistTaps="handled">
+      <ScrollView contentContainerStyle={{ paddingHorizontal: layout.gutter, paddingTop: 20, paddingBottom: 40, gap: layout.section }} keyboardShouldPersistTaps="handled">
         <PressableScale onPress={() => router.back()} accessibilityRole="button" accessibilityLabel="Close" style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name="close" size={20} /></PressableScale>
         <Animated.View entering={FadeInDown.springify()} style={{ gap: 8 }}>
           <T v="h1">Welcome</T>
@@ -50,7 +51,7 @@ export default function Login() {
           <View style={{ flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: colors.border }} />
         </View>
 
-        <Animated.View style={[{ gap: 18 }, shake.style]}>
+        <Animated.View style={[{ gap: layout.item }, shake.style]}>
           <Input label="Email" value={email} onChangeText={setEmail} autoCapitalize="none" keyboardType="email-address" autoComplete="email" error={errors.email} />
           <Input label="Password" value={password} onChangeText={setPassword} secureTextEntry autoComplete="password" error={errors.password} />
         </Animated.View>

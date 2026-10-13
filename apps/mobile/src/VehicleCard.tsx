@@ -57,7 +57,7 @@ export function VehicleCard({ vehicle, mode, index = 0 }: { vehicle: Vehicle; mo
     <Animated.View entering={FadeInDown.delay(Math.min(index, 8) * 70).springify().damping(18)} layout={LinearTransition.springify()}>
       <PressableScale accessibilityRole="button" accessibilityLabel={vehicleName(vehicle)} onPress={() => router.push({ pathname: '/vehicle/[id]', params: { id: vehicle.id } })} style={s.card}>
         <View>
-          <VehiclePhoto photo={vehicle.photos[0]} height={180} width={700} />
+          <VehiclePhoto photo={vehicle.photos[0]} height={200} width={700} />
           <View style={s.badges}>{vehicle.inspected && <Badge label="Inspected" tone="success" />}{vehicle.auction && <Badge label="Auction" />}</View>
           <HeartButton id={vehicle.id} />
         </View>
@@ -65,8 +65,8 @@ export function VehicleCard({ vehicle, mode, index = 0 }: { vehicle: Vehicle; mo
           <T v="title" numberOfLines={1}>{vehicleName(vehicle)}</T>
           <T v="label" color={colors.text2}>{formatKm(vehicle.mileageKm)} · {vehicle.fuel} · {vehicle.location}</T>
           {price && (
-            <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4, marginTop: 6 }}>
-              <T v="h3" color={colors.orange400}>{formatNaira(price.amount)}</T>
+            <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4, marginTop: 8 }}>
+              <T v="h3">{formatNaira(price.amount)}</T>
               <T v="label" color={colors.text3}>{price.suffix}</T>
             </View>
           )}
@@ -77,8 +77,8 @@ export function VehicleCard({ vehicle, mode, index = 0 }: { vehicle: Vehicle; mo
 }
 
 const makeStyles = (colors: ColorPalette) => StyleSheet.create({
-  card: { borderRadius: 20, overflow: 'hidden', backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border },
-  body: { paddingHorizontal: 16, paddingTop: 14, paddingBottom: 16, gap: 4 },
+  card: { borderRadius: 24, overflow: 'hidden', backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border },
+  body: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 20, gap: 4 },
   badges: { position: 'absolute', left: 12, top: 12, flexDirection: 'row', gap: 6 },
   heart: { position: 'absolute', right: 12, top: 12, width: 36, height: 36, borderRadius: 18, backgroundColor: colors.overlay, alignItems: 'center', justifyContent: 'center' },
 });

@@ -7,6 +7,7 @@ import { bodyTypes, filterVehicles, listingModes, vehicles, type BodyType, type 
 import { Chip, EmptyState, Input, Segmented, Skeleton, T } from '../../src/ui';
 import { VehicleCard } from '../../src/VehicleCard';
 import { useSimulatedLoad } from '../../src/hooks';
+import { layout } from '../../src/theme';
 import { useColors } from '../../src/ThemeProvider';
 
 type ModeOpt = ListingMode | 'all';
@@ -28,13 +29,13 @@ export default function Explore() {
     <Animated.FlatList
       data={loading ? [] : results}
       keyExtractor={(v) => v.id}
-      contentContainerStyle={{ paddingTop: insets.top + 16, paddingHorizontal: 20, paddingBottom: 124, gap: 16 }}
+      contentContainerStyle={{ paddingTop: insets.top + layout.top, paddingHorizontal: layout.gutter, paddingBottom: layout.tabBar, gap: layout.item }}
       keyboardShouldPersistTaps="handled"
       itemLayoutAnimation={LinearTransition.springify()}
       ListHeaderComponent={
-        <View style={{ gap: 16, marginBottom: 4 }}>
+        <View style={{ gap: layout.item, marginBottom: 4 }}>
           <T v="h1">Explore</T>
-          <Input label="Search" value={q} onChangeText={setQ} placeholder="Make, model or city" returnKeyType="search" />
+          <Input label="Search" hideLabel value={q} onChangeText={setQ} placeholder="Make, model or city" returnKeyType="search" />
           <Segmented options={options} value={mode} onChange={setMode} />
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>{bodyTypes.map((b) => <Chip key={b} label={b} active={body.includes(b)} onPress={() => toggle(b)} />)}</View>
           {!loading && <T v="label" color={colors.text2}>{results.length} vehicle{results.length === 1 ? '' : 's'}</T>}
