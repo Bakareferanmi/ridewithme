@@ -7,7 +7,6 @@ import { Icon } from './Icon';
 export function Carousel({ children, label, autoPlay = true }: { children: ReactNode; label: string; autoPlay?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const drag = useRef({ down: false, x: 0, left: 0, moved: false });
-  const [progress, setProgress] = useState(0);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(true);
   const [dragging, setDragging] = useState(false);
@@ -18,7 +17,6 @@ export function Carousel({ children, label, autoPlay = true }: { children: React
     const max = el.scrollWidth - el.clientWidth;
     setCanPrev(el.scrollLeft > 4);
     setCanNext(el.scrollLeft < max - 4);
-    setProgress(max > 0 ? el.scrollLeft / max : 1);
   }, []);
 
   useEffect(() => {
@@ -88,9 +86,6 @@ export function Carousel({ children, label, autoPlay = true }: { children: React
         {children}
       </div>
       <div className="carousel-foot">
-        <div className="carousel-bar" aria-hidden="true">
-          <span style={{ width: `${Math.max(12, progress * 100)}%` }} />
-        </div>
         <div className="carousel-arrows">
           <button type="button" className="btn btn-secondary btn-icon btn-sm" aria-label="Previous" disabled={!canPrev} onClick={() => page(-1)}>
             <Icon name="chevronLeft" size={18} />
