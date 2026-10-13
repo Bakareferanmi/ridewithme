@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -7,7 +7,6 @@ import type { IconName } from '@rwm/icons';
 import { Icon } from '../../src/Icon';
 import { Button, PressableScale, Segmented, T } from '../../src/ui';
 import { useStore } from '../../src/store';
-import { radius } from '../../src/theme';
 import { useColors, useTheme } from '../../src/ThemeProvider';
 
 const ROWS: { icon: IconName; label: string }[] = [
@@ -24,20 +23,20 @@ export default function Profile() {
   const insets = useSafeAreaInsets();
   const { session, signOut } = useStore();
   return (
-    <Animated.ScrollView contentContainerStyle={{ paddingTop: insets.top + 16, padding: 20, gap: 20 }}>
+    <Animated.ScrollView contentContainerStyle={{ paddingTop: insets.top + 16, paddingHorizontal: 20, paddingBottom: 124, gap: 28 }}>
       <T v="h1">Profile</T>
       {session ? (
         <Animated.View entering={FadeInDown.springify()} style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
-          <View style={{ width: 60, height: 60, borderRadius: 30, backgroundColor: colors.orange500, alignItems: 'center', justifyContent: 'center' }}><T v="h3" color={colors.onPrimary}>{initials(session.name)}</T></View>
+          <View style={{ width: 52, height: 52, borderRadius: 26, backgroundColor: colors.orange500, alignItems: 'center', justifyContent: 'center' }}><T v="h3" color={colors.onPrimary}>{initials(session.name)}</T></View>
           <View><T v="title">{session.name}</T><T v="label" color={colors.text2}>{session.email}</T></View>
         </Animated.View>
       ) : (
         <View style={{ gap: 12 }}><T color={colors.text2}>Sign in to save vehicles and track your orders.</T><Button label="Sign in" onPress={() => router.push('/login')} /></View>
       )}
-      <View style={{ borderRadius: radius.lg, backgroundColor: colors.surface1, borderWidth: 1, borderColor: colors.border }}>
+      <View style={{ borderRadius: 20, backgroundColor: colors.surface1, overflow: 'hidden' }}>
         {ROWS.map((r, i) => (
-          <PressableScale key={r.label} accessibilityRole="button" style={{ flexDirection: 'row', alignItems: 'center', gap: 14, padding: 16, borderTopWidth: i ? 1 : 0, borderTopColor: colors.border }}>
-            <Icon name={r.icon} size={22} color={colors.text2} /><T style={{ flex: 1 }}>{r.label}</T><Icon name="chevronRight" size={18} color={colors.text3} />
+          <PressableScale key={r.label} accessibilityRole="button" style={{ flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 16, paddingHorizontal: 18, borderTopWidth: i ? StyleSheet.hairlineWidth : 0, borderTopColor: colors.border }}>
+            <Icon name={r.icon} size={20} color={colors.text2} /><T style={{ flex: 1 }}>{r.label}</T><Icon name="chevronRight" size={18} color={colors.text3} />
           </PressableScale>
         ))}
       </View>

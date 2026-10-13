@@ -12,12 +12,12 @@ export const fonts = {
 
 /** Mobile type scale: each desktop size stepped down one level. */
 export const VARIANTS = {
-  h1: { size: 28, line: 36, font: fonts.semibold },
+  h1: { size: 26, line: 34, font: fonts.semibold },
   h2: { size: 22, line: 30, font: fonts.semibold },
-  h3: { size: 18, line: 26, font: fonts.semibold },
-  title: { size: 16, line: 22, font: fonts.semibold },
-  body: { size: 15, line: 22, font: fonts.regular },
-  label: { size: 13, line: 18, font: fonts.medium },
+  h3: { size: 17, line: 24, font: fonts.semibold },
+  title: { size: 15, line: 21, font: fonts.semibold },
+  body: { size: 14, line: 21, font: fonts.regular },
+  label: { size: 12.5, line: 17, font: fonts.medium },
   caption: { size: 11, line: 16, font: fonts.medium },
 } as const;
 export type Variant = keyof typeof VARIANTS;

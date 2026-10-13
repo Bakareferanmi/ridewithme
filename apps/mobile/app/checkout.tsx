@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeInRight, FadeOutLeft, ZoomIn, useAnimatedProps, useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming } from 'react-native-reanimated';
@@ -116,7 +116,7 @@ export default function Checkout() {
             </PressableScale>
           ))}
           {step === 2 && (
-            <View style={{ padding: 16, borderRadius: radius.lg, backgroundColor: colors.surface1, borderWidth: 1, borderColor: colors.border, gap: 12 }}>
+            <View style={{ padding: 16, borderRadius: 18, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 12 }}>
               <T v="title">{vehicleName(v)}</T>
               {[['Type', modeLabel(m)], ['Name', form.fullName], ['Phone', form.phone], ['Payment', METHODS.find((x) => x.id === method)?.label ?? '']].map(([k, val]) => (
                 <View key={k} style={{ flexDirection: 'row', justifyContent: 'space-between' }}><T color={colors.text3}>{k}</T><T>{val}</T></View>

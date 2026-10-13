@@ -15,7 +15,7 @@ export default function Saved() {
     <Animated.FlatList
       data={list}
       keyExtractor={(v) => v.id}
-      contentContainerStyle={{ paddingTop: insets.top + 16, padding: 20, paddingBottom: 32, gap: 14, flexGrow: 1 }}
+      contentContainerStyle={{ paddingTop: insets.top + 16, paddingHorizontal: 20, paddingBottom: 124, gap: 16, flexGrow: 1 }}
       itemLayoutAnimation={LinearTransition.springify()}
       ListHeaderComponent={<T v="h1" style={{ marginBottom: 6 }}>Saved</T>}
       renderItem={({ item, index }) => <VehicleCard vehicle={item} index={index} />}

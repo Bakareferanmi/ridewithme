@@ -28,17 +28,17 @@ export default function Explore() {
     <Animated.FlatList
       data={loading ? [] : results}
       keyExtractor={(v) => v.id}
-      contentContainerStyle={{ paddingTop: insets.top + 16, padding: 20, paddingBottom: 32, gap: 14 }}
+      contentContainerStyle={{ paddingTop: insets.top + 16, paddingHorizontal: 20, paddingBottom: 124, gap: 16 }}
       keyboardShouldPersistTaps="handled"
       itemLayoutAnimation={LinearTransition.springify()}
       ListHeaderComponent={
-        <View style={{ gap: 14, marginBottom: 6 }}>
+        <View style={{ gap: 16, marginBottom: 4 }}>
           <T v="h1">Explore</T>
           <Input label="Search" value={q} onChangeText={setQ} placeholder="Make, model or city" returnKeyType="search" />
           <Segmented options={options} value={mode} onChange={setMode} />
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>{bodyTypes.map((b) => <Chip key={b} label={b} active={body.includes(b)} onPress={() => toggle(b)} />)}</View>
           {!loading && <T v="label" color={colors.text2}>{results.length} vehicle{results.length === 1 ? '' : 's'}</T>}
-          {loading && [0, 1].map((i) => <Skeleton key={i} height={250} radius={24} />)}
+          {loading && [0, 1].map((i) => <Skeleton key={i} height={250} radius={20} />)}
         </View>
       }
       renderItem={({ item, index }) => <VehicleCard vehicle={item} mode={mode === 'all' ? undefined : mode} index={index} />}

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { KeyboardAvoidingView, Modal, Platform, Pressable, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeInDown, FadeInUp, Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
@@ -92,7 +92,7 @@ export default function VehicleDetail() {
             <T color={colors.text2}>{v.description}</T>
           </Animated.View>
           {options.length > 1 && <Segmented options={options} value={mode} onChange={setMode} />}
-          <Animated.View key={mode} entering={FadeInDown.springify()} style={{ padding: 16, borderRadius: radius.lg, backgroundColor: colors.surface1, borderWidth: 1, borderColor: colors.border, gap: 10 }}>
+          <Animated.View key={mode} entering={FadeInDown.springify()} style={{ padding: 16, borderRadius: 18, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 10 }}>
             {price && <><T v="label" color={colors.text2}>{mode === 'auction' ? 'Current bid' : price.label}</T>
               <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}><T v="h1" color={colors.orange400}>{formatNaira(mode === 'auction' ? current : price.amount)}</T><T color={colors.text3}>{price.suffix}</T></View></>}
             {mode === 'rent' && (
@@ -110,7 +110,7 @@ export default function VehicleDetail() {
           </Animated.View>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
             {specs.map((s, i) => (
-              <Animated.View key={s.label} entering={FadeInDown.delay(i * 60).springify()} style={{ width: '48%', padding: 14, borderRadius: radius.lg, backgroundColor: colors.surface1, borderWidth: 1, borderColor: colors.border, gap: 6 }}>
+              <Animated.View key={s.label} entering={FadeInDown.delay(i * 60).springify()} style={{ width: '48%', padding: 14, borderRadius: 18, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 6 }}>
                 <Icon name={s.icon} size={20} color={colors.orange400} /><T v="caption" color={colors.text3}>{s.label}</T><T v="label">{s.value}</T>
               </Animated.View>
             ))}

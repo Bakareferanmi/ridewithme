@@ -19,28 +19,28 @@ export default function Home() {
   const insets = useSafeAreaInsets();
   const { session } = useStore();
   return (
-    <ScrollView contentContainerStyle={{ paddingTop: insets.top + 16, padding: 20, paddingBottom: 32, gap: 24 }} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={{ paddingTop: insets.top + 16, paddingHorizontal: 20, paddingBottom: 124, gap: 28 }} showsVerticalScrollIndicator={false}>
       <Animated.View entering={FadeInDown.springify()} style={{ gap: 4 }}>
         <T v="label" color={colors.text2}>{session ? `Hello, ${session.name}` : 'Hello there'}</T>
         <T v="h1">Find your <T v="h1" color={colors.orange500}>next ride</T></T>
       </Animated.View>
       <Animated.View entering={FadeInDown.delay(80).springify()}>
-        <PressableScale onPress={() => router.push('/explore')} accessibilityRole="search" accessibilityLabel="Search vehicles" style={{ height: 52, borderRadius: radius.pill, backgroundColor: colors.surface2, borderWidth: 1, borderColor: colors.border, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 18 }}>
-          <Icon name="search" size={20} color={colors.text3} />
+        <PressableScale onPress={() => router.push('/explore')} accessibilityRole="search" accessibilityLabel="Search vehicles" style={{ height: 48, borderRadius: radius.pill, backgroundColor: colors.surface2, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 18 }}>
+          <Icon name="search" size={18} color={colors.text3} />
           <T color={colors.text3}>Search make, model or city</T>
         </PressableScale>
       </Animated.View>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         {listingModes.map((m, i) => (
-          <Animated.View key={m.id} entering={FadeInRight.delay(160 + i * 70).springify()} style={{ width: '48%' }}>
-            <PressableScale onPress={() => router.push({ pathname: '/explore', params: { mode: m.id } })} accessibilityRole="button" style={{ padding: 16, borderRadius: radius.lg, backgroundColor: colors.surface1, borderWidth: 1, borderColor: colors.border, gap: 10 }}>
-              <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: colors.orangeTint, alignItems: 'center', justifyContent: 'center' }}><Icon name={ICON[m.id]} size={22} color={colors.orange400} /></View>
-              <T v="title">{m.label}</T>
+          <Animated.View key={m.id} entering={FadeInRight.delay(160 + i * 60).springify()}>
+            <PressableScale onPress={() => router.push({ pathname: '/explore', params: { mode: m.id } })} accessibilityRole="button" accessibilityLabel={m.label} style={{ alignItems: 'center', gap: 8, width: 72 }}>
+              <View style={{ width: 52, height: 52, borderRadius: 18, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name={ICON[m.id]} size={22} color={colors.orange500} /></View>
+              <T v="caption" color={colors.text2}>{m.label}</T>
             </PressableScale>
           </Animated.View>
         ))}
       </View>
-      <View style={{ gap: 14 }}>
+      <View style={{ gap: 16 }}>
         <T v="h3">Featured</T>
         {vehicles.slice(0, 4).map((v, i) => <VehicleCard key={v.id} vehicle={v} index={i} />)}
       </View>
