@@ -1,19 +1,18 @@
 import { StyleSheet, View } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, type Href } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { initials } from '@rwm/shared';
 import type { IconName } from '@rwm/icons';
 import { Icon } from '../../src/Icon';
-import { Button, PressableScale, Segmented, T } from '../../src/ui';
+import { Avatar, Button, PressableScale, Segmented, T } from '../../src/ui';
 import { useStore } from '../../src/store';
 import { useColors, useTheme } from '../../src/ThemeProvider';
 
-const ROWS: { icon: IconName; label: string }[] = [
-  { icon: 'package', label: 'My orders' },
-  { icon: 'payment', label: 'Payment methods' },
-  { icon: 'bell', label: 'Notifications' },
-  { icon: 'info', label: 'Help and support' },
+const ROWS: { icon: IconName; label: string; href: Href }[] = [
+  { icon: 'package', label: 'My orders', href: '/orders' },
+  { icon: 'payment', label: 'Payment methods', href: '/payment-methods' },
+  { icon: 'bell', label: 'Notifications', href: '/notifications' },
+  { icon: 'info', label: 'Help and support', href: '/help' },
 ];
 
 export default function Profile() {
@@ -26,16 +25,25 @@ export default function Profile() {
     <Animated.ScrollView contentContainerStyle={{ paddingTop: insets.top + 16, paddingHorizontal: 20, paddingBottom: 124, gap: 28 }}>
       <T v="h1">Profile</T>
       {session ? (
-        <Animated.View entering={FadeInDown.springify()} style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
-          <View style={{ width: 52, height: 52, borderRadius: 26, backgroundColor: colors.orange500, alignItems: 'center', justifyContent: 'center' }}><T v="h3" color={colors.onPrimary}>{initials(session.name)}</T></View>
-          <View><T v="title">{session.name}</T><T v="label" color={colors.text2}>{session.email}</T></View>
+        <Animated.View entering={FadeInDown.springify()}>
+          <PressableScale onPress={() => router.push('/edit-profile')} accessibilityRole="button" accessibilityLabel="Edit profile" style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
+            <Avatar name={session.name} photoUrl={session.photoUrl} />
+            <View style={{ flex: 1 }}>
+              <T v="title" numberOfLines={1}>{session.name}</T>
+              <T v="label" color={colors.text2} numberOfLines={1}>{session.email}</T>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, height: 34, paddingHorizontal: 14, borderRadius: 17, backgroundColor: colors.surface2 }}>
+              <Icon name="edit" size={14} color={colors.text2} />
+              <T v="label" color={colors.text2}>Edit</T>
+            </View>
+          </PressableScale>
         </Animated.View>
       ) : (
-        <View style={{ gap: 12 }}><T color={colors.text2}>Sign in to save vehicles and track your orders.</T><Button label="Sign in" onPress={() => router.push('/login')} /></View>
+        <View style={{ gap: 12 }}><T color={colors.text2}>Sign in or create an account to save vehicles and track your orders.</T><Button label="Sign in or sign up" onPress={() => router.push('/login')} /></View>
       )}
       <View style={{ borderRadius: 20, backgroundColor: colors.surface1, overflow: 'hidden' }}>
         {ROWS.map((r, i) => (
-          <PressableScale key={r.label} accessibilityRole="button" style={{ flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 16, paddingHorizontal: 18, borderTopWidth: i ? StyleSheet.hairlineWidth : 0, borderTopColor: colors.border }}>
+          <PressableScale key={r.label} onPress={() => router.push(r.href)} accessibilityRole="button" accessibilityLabel={r.label} style={{ flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 16, paddingHorizontal: 18, borderTopWidth: i ? StyleSheet.hairlineWidth : 0, borderTopColor: colors.border }}>
             <Icon name={r.icon} size={20} color={colors.text2} /><T style={{ flex: 1 }}>{r.label}</T><Icon name="chevronRight" size={18} color={colors.text3} />
           </PressableScale>
         ))}

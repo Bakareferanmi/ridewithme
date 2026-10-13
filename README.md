@@ -23,6 +23,21 @@ pnpm typecheck
 
 On Termux, run the web or admin dev server and open it in your phone browser. Run the mobile app with Expo Go pointed at the QR code (or `--tunnel`).
 
+## Google sign in (mobile)
+
+Sign in and sign up are the same button: Google tells the app who you are and the account is created on first use. Create OAuth client IDs in Google Cloud Console (Web, Android with package `com.ridewithme.app` and your SHA-1, iOS with bundle ID `com.ridewithme.app`), then put them in `apps/mobile/.env`:
+
+```bash
+EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=...
+EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=...
+EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=...
+# optional, shown on the Help screen
+EXPO_PUBLIC_SUPPORT_EMAIL=...
+EXPO_PUBLIC_SUPPORT_PHONE=...
+```
+
+Google's native redirect does not work inside Expo Go. Test it in a development build (`npx expo run:android` or an EAS dev build). Without the IDs the button shows a setup message instead of failing.
+
 ## Real backend
 
 Everything runs on sample data from `@rwm/shared` until you set `NEXT_PUBLIC_API_URL`. `createApiClient` in `packages/shared/src/api.ts` is the single place to match your endpoints.

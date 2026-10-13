@@ -16,6 +16,14 @@ export const signupSchema = loginSchema.extend({
   phone,
 });
 
+/** Edit-profile form. Phone and city are optional; phone is validated only when filled in. */
+export const profileSchema = z.object({
+  name: z.string().trim().min(2, 'Enter your full name'),
+  email: z.string().trim().min(1, 'Enter your email').email('Enter a valid email'),
+  phone: phone.or(z.literal('')),
+  city: z.string().trim().max(60, 'City is too long'),
+});
+
 export const makeBidSchema = (minBid: number) =>
   z.object({
     amount: z
@@ -36,6 +44,7 @@ export const termsSchema = z.object({
 
 export type LoginInput = z.infer<typeof loginSchema>;
 export type SignupInput = z.infer<typeof signupSchema>;
+export type ProfileInput = z.infer<typeof profileSchema>;
 export type CheckoutInput = z.infer<typeof checkoutSchema>;
 
 /** Collapse zod issues into `{ field: firstMessage }` for simple form state. */

@@ -8,6 +8,7 @@ import { Icon } from '../../src/Icon';
 import { PressableScale, T } from '../../src/ui';
 import { VehicleCard } from '../../src/VehicleCard';
 import { useStore } from '../../src/store';
+import { firstName, useGreeting } from '../../src/greeting';
 import { radius } from '../../src/theme';
 import { useColors } from '../../src/ThemeProvider';
 
@@ -18,10 +19,11 @@ export default function Home() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { session } = useStore();
+  const greeting = useGreeting();
   return (
     <ScrollView contentContainerStyle={{ paddingTop: insets.top + 16, paddingHorizontal: 20, paddingBottom: 124, gap: 28 }} showsVerticalScrollIndicator={false}>
       <Animated.View entering={FadeInDown.springify()} style={{ gap: 4 }}>
-        <T v="label" color={colors.text2}>{session ? `Hello, ${session.name}` : 'Hello there'}</T>
+        <T v="label" color={colors.text2}>{session ? `${greeting}, ${firstName(session.name)}` : greeting}</T>
         <T v="h1">Find your <T v="h1" color={colors.orange500}>next ride</T></T>
       </Animated.View>
       <Animated.View entering={FadeInDown.delay(80).springify()}>

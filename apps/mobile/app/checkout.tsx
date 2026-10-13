@@ -8,6 +8,7 @@ import { checkoutSchema, fieldErrors, findVehicle, formatNaira, modeLabel, order
 import type { IconName } from '@rwm/icons';
 import { Icon } from '../src/Icon';
 import { Button, Input, PressableScale, T, useShake } from '../src/ui';
+import { useStore } from '../src/store';
 import { useColors } from '../src/ThemeProvider';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -47,7 +48,8 @@ export default function Checkout() {
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState({ fullName: '', phone: '', email: '', address: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [method, setMethod] = useState<PaymentMethod>('card');
+  const { defaultPayment } = useStore();
+  const [method, setMethod] = useState<PaymentMethod>(defaultPayment);
   const shake = useShake();
   const progress = useSharedValue(1 / 3);
   useEffect(() => { progress.value = withTiming((step + 1) / 3, { duration: 350 }); }, [step, progress]);

@@ -1,7 +1,10 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View, type PressableProps, type StyleProp, type TextInputProps, type TextProps, type ViewStyle } from 'react-native';
+import { ActivityIndicator, Image, Pressable, StyleSheet, Text, TextInput, View, type PressableProps, type StyleProp, type TextInputProps, type TextProps, type ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withSequence, withSpring, withTiming } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
+import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { initials } from '@rwm/shared';
 import type { IconName } from '@rwm/icons';
 import { Icon } from './Icon';
 import { fonts, radius, VARIANTS, type Variant, type ColorPalette } from './theme';
@@ -131,6 +134,30 @@ export function useShake() {
     x.value = withSequence(withTiming(-10, { duration: 50 }), withTiming(10, { duration: 80 }), withTiming(-6, { duration: 70 }), withTiming(0, { duration: 50 }));
   };
   return { style, trigger };
+}
+
+/** Top bar for pushed screens: back button and a title. */
+export function ScreenHeader({ title }: { title: string }) {
+  const colors = useColors();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  return (
+    <View style={{ paddingTop: insets.top + 8, paddingHorizontal: 20, paddingBottom: 12, flexDirection: 'row', alignItems: 'center', gap: 14, backgroundColor: colors.bg }}>
+      <PressableScale onPress={() => (router.canGoBack() ? router.back() : router.replace('/(tabs)/profile'))} accessibilityRole="button" accessibilityLabel="Back" style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}>
+        <Icon name="arrowLeft" size={20} />
+      </PressableScale>
+      <T v="h2" accessibilityRole="header">{title}</T>
+    </View>
+  );
+}
+
+/** Google photo when we have one, otherwise the person's initials. */
+export function Avatar({ name, photoUrl, size = 52 }: { name: string; photoUrl?: string; size?: number }) {
+  const colors = useColors();
+  const [failed, setFailed] = useState(false);
+  const box = { width: size, height: size, borderRadius: size / 2, backgroundColor: colors.orange500, alignItems: 'center' as const, justifyContent: 'center' as const, overflow: 'hidden' as const };
+  if (photoUrl && !failed) return <View style={box}><Image source={{ uri: photoUrl }} style={{ width: size, height: size }} onError={() => setFailed(true)} accessibilityIgnoresInvertColors /></View>;
+  return <View style={box}><T v={size > 64 ? 'h2' : 'h3'} color={colors.onPrimary}>{initials(name)}</T></View>;
 }
 
 const makeStyles = (colors: ColorPalette) => StyleSheet.create({
