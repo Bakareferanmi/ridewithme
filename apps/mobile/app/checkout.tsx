@@ -8,7 +8,6 @@ import { checkoutSchema, fieldErrors, findVehicle, formatNaira, modeLabel, order
 import type { IconName } from '@rwm/icons';
 import { Icon } from '../src/Icon';
 import { Button, Input, PressableScale, T, useShake } from '../src/ui';
-import { radius } from '../src/theme';
 import { useColors } from '../src/ThemeProvider';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -28,7 +27,7 @@ function Check() {
   const st = useAnimatedStyle(() => ({ transform: [{ scale: s.value }] }));
   return (
     <Animated.View style={st}>
-      <Svg width={120} height={120} viewBox="0 0 24 24">
+      <Svg width={96} height={96} viewBox="0 0 24 24">
         <Circle cx={12} cy={12} r={11} fill={colors.successTint} />
         <AnimatedPath d="M7 12.5l3.2 3.2L17 9" stroke={colors.success} strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" strokeDasharray={26} animatedProps={props} />
       </Svg>
@@ -90,15 +89,15 @@ export default function Checkout() {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg, paddingTop: insets.top }}>
-      <View style={{ padding: 16, gap: 14 }}>
+      <View style={{ paddingHorizontal: 20, paddingVertical: 12, gap: 16 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-          <PressableScale onPress={() => (step ? setStep(step - 1) : router.back())} accessibilityRole="button" accessibilityLabel="Back"><Icon name="arrowLeft" size={24} /></PressableScale>
+          <PressableScale onPress={() => (step ? setStep(step - 1) : router.back())} accessibilityRole="button" accessibilityLabel="Back" style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name="arrowLeft" size={20} /></PressableScale>
           <T v="h3">Checkout</T>
         </View>
-        <View style={{ height: 4, borderRadius: 2, backgroundColor: colors.border, overflow: 'hidden' }}><Animated.View style={[{ height: 4, backgroundColor: colors.orange500 }, bar]} /></View>
+        <View style={{ height: 3, borderRadius: 2, backgroundColor: colors.surface3, overflow: 'hidden' }}><Animated.View style={[{ height: 3, backgroundColor: colors.orange500 }, bar]} /></View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>{STEPS.map((s, i) => <T key={s} v="caption" color={i <= step ? colors.text : colors.text3}>{i + 1}. {s}</T>)}</View>
       </View>
-      <ScrollView contentContainerStyle={{ padding: 20, gap: 16, paddingBottom: 120 }} keyboardShouldPersistTaps="handled">
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 8, gap: 16, paddingBottom: 130 }} keyboardShouldPersistTaps="handled">
         <Animated.View key={step} entering={FadeInRight.springify().damping(20)} exiting={FadeOutLeft.duration(120)} style={{ gap: 16 }}>
           {step === 0 && (
             <Animated.View style={[{ gap: 16 }, shake.style]}>
@@ -109,10 +108,10 @@ export default function Checkout() {
             </Animated.View>
           )}
           {step === 1 && METHODS.map((mm) => (
-            <PressableScale key={mm.id} onPress={() => setMethod(mm.id)} accessibilityRole="radio" accessibilityState={{ selected: method === mm.id }} style={{ flexDirection: 'row', alignItems: 'center', gap: 14, padding: 16, borderRadius: radius.lg, backgroundColor: colors.surface2, borderWidth: 2, borderColor: method === mm.id ? colors.orange500 : colors.border }}>
-              <Icon name={mm.icon} size={24} color={colors.orange400} />
+            <PressableScale key={mm.id} onPress={() => setMethod(mm.id)} accessibilityRole="radio" accessibilityState={{ selected: method === mm.id }} style={{ flexDirection: 'row', alignItems: 'center', gap: 14, padding: 14, borderRadius: 16, backgroundColor: method === mm.id ? colors.orangeTint : colors.surface1, borderWidth: 1, borderColor: method === mm.id ? colors.orange500 : colors.border }}>
+              <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name={mm.icon} size={20} color={colors.orange500} /></View>
               <View style={{ flex: 1 }}><T v="title">{mm.label}</T><T v="label" color={colors.text2}>{mm.sub}</T></View>
-              {method === mm.id && <Animated.View entering={ZoomIn}><Icon name="checkCircle" size={22} color={colors.orange500} /></Animated.View>}
+              {method === mm.id && <Animated.View entering={ZoomIn}><Icon name="checkCircle" size={20} color={colors.orange500} /></Animated.View>}
             </PressableScale>
           ))}
           {step === 2 && (
@@ -127,7 +126,7 @@ export default function Checkout() {
           )}
         </Animated.View>
       </ScrollView>
-      <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: 16, paddingBottom: insets.bottom + 16, backgroundColor: colors.surface1, borderTopWidth: 1, borderTopColor: colors.border }}>
+      <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 20, paddingTop: 14, paddingBottom: insets.bottom + 14, backgroundColor: colors.surface1, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.border }}>
         <Button label={step === 2 ? `Pay ${formatNaira(amount)}` : 'Continue'} onPress={next} loading={busy} />
       </View>
     </View>

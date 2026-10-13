@@ -31,18 +31,18 @@ export default function Login() {
 
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: colors.bg }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 56, gap: 20 }} keyboardShouldPersistTaps="handled">
-        <PressableScale onPress={() => router.back()} accessibilityRole="button" accessibilityLabel="Close"><Icon name="close" size={26} /></PressableScale>
-        <Animated.View entering={FadeInDown.springify()} style={{ gap: 6 }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 20, paddingBottom: 32, gap: 28 }} keyboardShouldPersistTaps="handled">
+        <PressableScale onPress={() => router.back()} accessibilityRole="button" accessibilityLabel="Close" style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name="close" size={20} /></PressableScale>
+        <Animated.View entering={FadeInDown.springify()} style={{ gap: 8 }}>
           <T v="h1">Welcome back</T>
           <T color={colors.text2}>Sign in to save vehicles and track orders.</T>
         </Animated.View>
-        <Animated.View style={[{ gap: 16 }, shake.style]}>
+        <Animated.View style={[{ gap: 18 }, shake.style]}>
           <Input label="Email" value={email} onChangeText={setEmail} autoCapitalize="none" keyboardType="email-address" autoComplete="email" error={errors.email} />
           <Input label="Password" value={password} onChangeText={setPassword} secureTextEntry autoComplete="password" error={errors.password} />
         </Animated.View>
         <Button label="Sign in" onPress={submit} loading={busy} />
-        <View><T v="caption" color={colors.text3}>Demo sign in: any valid email and an 8+ character password.</T></View>
+        <View style={{ alignItems: 'center' }}><T v="caption" color={colors.text3}>Demo sign in: any valid email and an 8+ character password.</T></View>
       </ScrollView>
     </KeyboardAvoidingView>
   );

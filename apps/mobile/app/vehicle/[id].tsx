@@ -85,23 +85,23 @@ export default function VehicleDetail() {
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
       <Animated.ScrollView onScroll={onScroll} scrollEventThrottle={16} contentContainerStyle={{ paddingBottom: 130 }} showsVerticalScrollIndicator={false}>
         <Animated.View style={[{ height: HERO, overflow: 'hidden' }, hero]}><VehiclePhoto photo={v.photos[0]} height={HERO} width={1100} /></Animated.View>
-        <View style={{ marginTop: -24, borderTopLeftRadius: 28, borderTopRightRadius: 28, backgroundColor: colors.bg, padding: 20, gap: 20 }}>
-          <Animated.View entering={FadeInDown.springify()} style={{ gap: 8 }}>
+        <View style={{ marginTop: -24, borderTopLeftRadius: 28, borderTopRightRadius: 28, backgroundColor: colors.bg, paddingHorizontal: 20, paddingTop: 24, gap: 24 }}>
+          <Animated.View entering={FadeInDown.springify()} style={{ gap: 10 }}>
             <View style={{ flexDirection: 'row', gap: 6 }}>{v.inspected && <Badge label="Inspected" tone="success" />}<Badge label={v.body} tone="info" /></View>
             <T v="h2">{vehicleName(v)}</T>
             <T color={colors.text2}>{v.description}</T>
           </Animated.View>
           {options.length > 1 && <Segmented options={options} value={mode} onChange={setMode} />}
-          <Animated.View key={mode} entering={FadeInDown.springify()} style={{ padding: 16, borderRadius: 18, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 10 }}>
+          <Animated.View key={mode} entering={FadeInDown.springify()} style={{ padding: 18, borderRadius: 20, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 12 }}>
             {price && <><T v="label" color={colors.text2}>{mode === 'auction' ? 'Current bid' : price.label}</T>
-              <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}><T v="h1" color={colors.orange400}>{formatNaira(mode === 'auction' ? current : price.amount)}</T><T color={colors.text3}>{price.suffix}</T></View></>}
+              <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}><T v="h2" color={colors.orange500}>{formatNaira(mode === 'auction' ? current : price.amount)}</T><T color={colors.text3}>{price.suffix}</T></View></>}
             {mode === 'rent' && (
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <T v="label">Rental days</T>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
-                  <PressableScale onPress={() => setDays(Math.max(1, days - 1))} accessibilityRole="button" accessibilityLabel="Fewer days"><Icon name="minus" size={22} /></PressableScale>
+                  <PressableScale onPress={() => setDays(Math.max(1, days - 1))} accessibilityRole="button" accessibilityLabel="Fewer days" style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name="minus" size={16} /></PressableScale>
                   <T v="title">{days}</T>
-                  <PressableScale onPress={() => setDays(Math.min(30, days + 1))} accessibilityRole="button" accessibilityLabel="More days"><Icon name="plus" size={22} /></PressableScale>
+                  <PressableScale onPress={() => setDays(Math.min(30, days + 1))} accessibilityRole="button" accessibilityLabel="More days" style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name="plus" size={16} /></PressableScale>
                 </View>
               </View>
             )}
@@ -110,14 +110,14 @@ export default function VehicleDetail() {
           </Animated.View>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
             {specs.map((s, i) => (
-              <Animated.View key={s.label} entering={FadeInDown.delay(i * 60).springify()} style={{ width: '48%', padding: 14, borderRadius: 18, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 6 }}>
-                <Icon name={s.icon} size={20} color={colors.orange400} /><T v="caption" color={colors.text3}>{s.label}</T><T v="label">{s.value}</T>
+              <Animated.View key={s.label} entering={FadeInDown.delay(i * 60).springify()} style={{ width: '48%', padding: 14, borderRadius: 16, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 6 }}>
+                <Icon name={s.icon} size={18} color={colors.orange500} /><T v="caption" color={colors.text3}>{s.label}</T><T v="label">{s.value}</T>
               </Animated.View>
             ))}
           </View>
           <View style={{ gap: 10 }}>
             <T v="h3">Features</T>
-            {v.features.map((f) => <View key={f} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}><Icon name="checkCircle" size={18} color={colors.success} /><T color={colors.text2}>{f}</T></View>)}
+            {v.features.map((f) => <View key={f} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}><Icon name="checkCircle" size={16} color={colors.success} /><T color={colors.text2}>{f}</T></View>)}
           </View>
         </View>
       </Animated.ScrollView>
@@ -128,7 +128,7 @@ export default function VehicleDetail() {
         <HeartButton id={v.id} />
       </View>
 
-      <Animated.View entering={FadeInUp.delay(200).springify()} style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: 16, paddingBottom: insets.bottom + 16, backgroundColor: colors.surface1, borderTopWidth: 1, borderTopColor: colors.border, flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+      <Animated.View entering={FadeInUp.delay(200).springify()} style={{ position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 20, paddingTop: 14, paddingBottom: insets.bottom + 14, backgroundColor: colors.surface1, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.border, flexDirection: 'row', alignItems: 'center', gap: 16 }}>
         <View style={{ flex: 1 }}><T v="caption" color={colors.text3}>{modeLabel(mode)}</T><T v="title">{formatNaira(mode === 'auction' ? current : orderAmount(v, mode, { days }))}</T></View>
         <View style={{ flex: 1.2 }}><Button label={mode === 'auction' ? 'Place bid' : mode === 'buy' ? 'Buy now' : mode === 'rent' ? 'Rent now' : 'Start lease'} onPress={cta} /></View>
       </Animated.View>
