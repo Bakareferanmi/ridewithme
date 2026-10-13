@@ -305,3 +305,4 @@
 .legal-body { max-width: 720px; display: flex; flex-direction: column; gap: 10px; }
 .legal-body h2 { margin-top: 18px; }
 .carousel-foot { justify-content: flex-end; }
+.carousel-track:focus, .carousel-track:focus-visible, .carousel:focus-within .carousel-track { outline: none; box-shadow: none; }
