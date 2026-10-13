@@ -22,7 +22,7 @@ export function Footer() {
           <span>© 2026 RideWithMe. All rights reserved.</span>
           <span>
             Built with <span aria-label="love" role="img">❤️</span> by{' '}
-            <a href="https://beepeethebrand.netlify.app" target="_blank" rel="noopener noreferrer" className="footer-credit">
+            <a href="https://beepeelabs.cv" target="_blank" rel="noopener noreferrer" className="footer-credit">
               BeepeeLabs
             </a>
           </span>
