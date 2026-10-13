@@ -327,4 +327,10 @@
   .hero-stat-value { order: 1; font-size: 20px; }
 }
 /* nav floats over the hero on the home page */
-.nav.on-hero:not(.is-scrolled) { --color-text: #fff; --color-text-2: rgba(255,255,255,.78); --color-surface-2: rgba(255,255,255,.14); --color-surface-3: rgba(255,255,255,.2); --color-border: rgba(255,255,255,.28); --color-border-strong: rgba(255,255,255,.4); background: transparent; border-color: rgba(255,255,255,.12); }
+.nav.on-hero:not(.is-scrolled) { --color-text: #fff; --color-text-2: rgba(255,255,255,.78); --color-surface-2: rgba(255,255,255,.14); --color-surface-3: rgba(255,255,255,.2); --color-border: rgba(255,255,255,.16); --color-border-strong: rgba(255,255,255,.16); background: transparent; border-color: transparent; }
+
+/* subtle nav icon buttons */
+.nav .btn-secondary.btn-icon { background: var(--color-surface-2); border-color: transparent; box-shadow: none; }
+.nav .btn-secondary.btn-icon:hover { background: var(--color-surface-3); border-color: transparent; }
+.nav.on-hero:not(.is-scrolled) .btn-secondary.btn-icon { background: rgba(255,255,255,.12); backdrop-filter: blur(8px); }
+.nav.on-hero:not(.is-scrolled) .btn-secondary.btn-icon:hover { background: rgba(255,255,255,.2); }
