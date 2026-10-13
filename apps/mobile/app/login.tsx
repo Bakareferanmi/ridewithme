@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { fieldErrors, loginSchema } from '@rwm/shared';
 import { Button, Input, PressableScale, T, useShake } from '../src/ui';
 import { Icon } from '../src/Icon';
 import { useStore } from '../src/store';
-import { useGoogleSignIn } from '../src/google';
+import { GoogleButton } from '../src/GoogleButton';
 import { useColors } from '../src/ThemeProvider';
 
 export default function Login() {
@@ -18,7 +18,6 @@ export default function Login() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const shake = useShake();
-  const google = useGoogleSignIn(() => router.back());
 
   const submit = async () => {
     const r = loginSchema.safeParse({ email, password });
@@ -41,22 +40,8 @@ export default function Login() {
         </Animated.View>
 
         <View style={{ gap: 10 }}>
-          <PressableScale
-            onPress={google.start}
-            disabled={google.busy}
-            accessibilityRole="button"
-            accessibilityLabel="Continue with Google"
-            style={{ minHeight: 52, borderRadius: 26, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12, paddingHorizontal: 24, opacity: google.busy ? 0.6 : 1 }}
-          >
-            {google.busy ? <ActivityIndicator color={colors.text} /> : (
-              <>
-                <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center' }}><T v="title" color="#4285F4" style={{ lineHeight: 22 }}>G</T></View>
-                <T v="title">Continue with Google</T>
-              </>
-            )}
-          </PressableScale>
+          <GoogleButton onDone={() => router.back()} />
           <T v="caption" color={colors.text3} style={{ textAlign: 'center' }}>New here? Google creates your account the first time you sign in.</T>
-          {!!google.error && <T v="caption" color={colors.danger} style={{ textAlign: 'center' }}>{google.error}</T>}
         </View>
 
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>

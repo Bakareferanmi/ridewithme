@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { PaymentMethod } from '@rwm/shared';
+import { formatName, nameFromEmail } from './name';
 
 export interface Session {
   name: string;
@@ -61,7 +62,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           ...saved,
           notifications: { ...empty.notifications, ...saved.notifications },
           // Sessions saved before Google sign-in existed have no provider field.
-          session: saved.session ? ({ ...saved.session, provider: saved.session.provider ?? 'email' } as Session) : null,
+          session: saved.session ? ({ ...saved.session, name: formatName(saved.session.name ?? '') || nameFromEmail(saved.session.email ?? ''), provider: saved.session.provider ?? 'email' } as Session) : null,
         });
       })
       .catch(() => {})
@@ -80,13 +81,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     ...state,
     ready,
     toggleFavorite: (id) => update((s) => ({ ...s, favorites: s.favorites.includes(id) ? s.favorites.filter((f) => f !== id) : [...s.favorites, id] })),
-    signIn: (email) => update((s) => ({ ...s, session: { email, name: email.split('@')[0] ?? 'You', provider: 'email' } })),
+    signIn: (email) => update((s) => ({ ...s, session: { email, name: nameFromEmail(email), provider: 'email' } })),
     signInWithGoogle: (p) => update((s) => {
       // Keep details the user already edited if the same Google account signs back in.
       const prev = s.session?.email.toLowerCase() === p.email.toLowerCase() ? s.session : null;
-      return { ...s, session: { ...prev, name: prev?.name ?? p.name, email: p.email, photoUrl: p.photoUrl ?? prev?.photoUrl, provider: 'google' } };
+      return { ...s, session: { ...prev, name: prev?.name ?? (formatName(p.name) || nameFromEmail(p.email)), email: p.email, photoUrl: p.photoUrl ?? prev?.photoUrl, provider: 'google' } };
     }),
-    updateProfile: (patch) => update((s) => (s.session ? { ...s, session: { ...s.session, ...patch } } : s)),
+    updateProfile: (patch) => update((s) => (s.session ? { ...s, session: { ...s.session, ...patch, ...(patch.name !== undefined && { name: formatName(patch.name) || s.session.name }) } } : s)),
     setNotification: (key, v) => update((s) => ({ ...s, notifications: { ...s.notifications, [key]: v } })),
     setDefaultPayment: (m) => update((s) => ({ ...s, defaultPayment: m })),
     signOut: () => update((s) => ({ ...s, session: null })),

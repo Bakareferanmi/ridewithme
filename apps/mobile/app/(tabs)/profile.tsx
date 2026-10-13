@@ -13,6 +13,7 @@ const ROWS: { icon: IconName; label: string; href: Href }[] = [
   { icon: 'payment', label: 'Payment methods', href: '/payment-methods' },
   { icon: 'bell', label: 'Notifications', href: '/notifications' },
   { icon: 'info', label: 'Help and support', href: '/help' },
+  { icon: 'route', label: 'Welcome tour', href: '/onboarding' },
 ];
 
 export default function Profile() {

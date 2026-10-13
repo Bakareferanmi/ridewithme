@@ -6,6 +6,7 @@ import Animated, { FadeInDown, interpolate, useAnimatedScrollHandler, useAnimate
 import type { IconName } from '@rwm/icons';
 import { Icon } from '../src/Icon';
 import { Button, PressableScale, T } from '../src/ui';
+import { GoogleButton } from '../src/GoogleButton';
 import { useStore } from '../src/store';
 import { useColors } from '../src/ThemeProvider';
 
@@ -13,6 +14,7 @@ const SLIDES: { icon: IconName; title: string; body: string }[] = [
   { icon: 'car', title: 'Every way to get a car', body: 'Buy, rent, lease or bid at auction, all in one place.' },
   { icon: 'shield', title: 'Inspected and verified', body: 'Every listing carries a clear inspection report before you commit.' },
   { icon: 'wallet', title: 'Pay your way', body: 'Card, bank transfer or wallet. Track your order from payment to delivery.' },
+  { icon: 'user', title: 'Join RideWithMe', body: 'Create an account in one tap to save vehicles, bid at auctions and track your orders.' },
 ];
 
 function Dot({ i, x, w }: { i: number; x: SharedValue<number>; w: number }) {
@@ -40,8 +42,8 @@ export default function Onboarding() {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg, paddingTop: insets.top, paddingBottom: insets.bottom + 16 }}>
-      <View style={{ alignItems: 'flex-end', padding: 16 }}>
-        <PressableScale onPress={done} accessibilityRole="button" accessibilityLabel="Skip"><T v="label" color={colors.text2}>Skip</T></PressableScale>
+      <View style={{ alignItems: 'flex-end', padding: 16, minHeight: 53 }}>
+        {!last && <PressableScale onPress={done} accessibilityRole="button" accessibilityLabel="Skip"><T v="label" color={colors.text2}>Skip</T></PressableScale>}
       </View>
       <Animated.FlatList
         ref={ref}
@@ -67,7 +69,17 @@ export default function Onboarding() {
       />
       <View style={{ paddingHorizontal: 24, gap: 28 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 6 }}>{SLIDES.map((_, i) => <Dot key={i} i={i} x={x} w={width} />)}</View>
-        <Button label={last ? 'Get started' : 'Next'} onPress={() => { if (last) { done(); return; } ref.current?.scrollToIndex({ index: index + 1, animated: true }); setIndex(index + 1); }} />
+        {last ? (
+          <Animated.View entering={FadeInDown.springify()} style={{ gap: 12 }}>
+            <GoogleButton onDone={done} />
+            <Button label="Sign in with email" variant="secondary" onPress={() => { finishOnboarding(); router.replace('/(tabs)'); router.push('/login'); }} />
+            <PressableScale onPress={done} accessibilityRole="button" accessibilityLabel="Continue as guest" style={{ alignSelf: 'center', paddingVertical: 8, paddingHorizontal: 16 }}>
+              <T v="label" color={colors.text2}>Continue as guest</T>
+            </PressableScale>
+          </Animated.View>
+        ) : (
+          <Button label="Next" onPress={() => { ref.current?.scrollToIndex({ index: index + 1, animated: true }); setIndex(index + 1); }} />
+        )}
       </View>
     </View>
   );

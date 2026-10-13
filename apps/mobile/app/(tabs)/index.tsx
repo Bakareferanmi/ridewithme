@@ -23,8 +23,8 @@ export default function Home() {
   return (
     <ScrollView contentContainerStyle={{ paddingTop: insets.top + 16, paddingHorizontal: 20, paddingBottom: 124, gap: 28 }} showsVerticalScrollIndicator={false}>
       <Animated.View entering={FadeInDown.springify()} style={{ gap: 4 }}>
-        <T v="label" color={colors.text2}>{session ? `${greeting}, ${firstName(session.name)}` : greeting}</T>
-        <T v="h1">Find your <T v="h1" color={colors.orange500}>next ride</T></T>
+        <T v="label">{session ? `${greeting}, ${firstName(session.name)}` : greeting}</T>
+        <T v="h1">Find your next ride</T>
       </Animated.View>
       <Animated.View entering={FadeInDown.delay(80).springify()}>
         <PressableScale onPress={() => router.push('/explore')} accessibilityRole="search" accessibilityLabel="Search vehicles" style={{ height: 48, borderRadius: radius.pill, backgroundColor: colors.surface2, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 18 }}>
