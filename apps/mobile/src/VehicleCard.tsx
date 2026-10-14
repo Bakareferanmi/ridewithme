@@ -67,18 +67,18 @@ export function VehicleCard({ vehicle, mode, index = 0 }: { vehicle: Vehicle; mo
         </View>
         <View style={s.info}>
           <View style={s.top}>
-            <T v="title" numberOfLines={1} style={{ flex: 1 }}>{vehicleName(vehicle)}</T>
+            <T v="title" numberOfLines={1} style={{ flex: 1, fontSize: 13.5, lineHeight: 19 }}>{vehicleName(vehicle)}</T>
             <HeartButton id={vehicle.id} inline />
           </View>
-          <T v="label" color={colors.text2} numberOfLines={1}>{vehicle.location} · {formatKm(vehicle.mileageKm)}</T>
+          <T v="caption" color={colors.text2} numberOfLines={1} style={{ fontSize: 11.5, lineHeight: 16 }}>{vehicle.location} · {formatKm(vehicle.mileageKm)}</T>
           <View style={s.bottom}>
             {price ? (
               <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 2, flexShrink: 1 }}>
-                <T v="h3" numberOfLines={1}>{formatNaira(price.amount)}</T>
-                <T v="label" color={colors.text3}>{suffix}</T>
+                <T v="title" numberOfLines={1} style={{ fontSize: 14.5, lineHeight: 20 }}>{formatNaira(price.amount)}</T>
+                <T v="caption" color={colors.text3}>{suffix}</T>
               </View>
             ) : <View />}
-            {vehicle.inspected && <View accessible accessibilityLabel="Inspected"><Icon name="checkCircle" size={17} color={colors.success} /></View>}
+            {vehicle.inspected && <View accessible accessibilityLabel="Inspected"><Icon name="checkCircle" size={16} color={colors.success} /></View>}
           </View>
         </View>
       </PressableScale>
