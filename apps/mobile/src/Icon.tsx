@@ -23,7 +23,7 @@ const map: Record<IconName, LucideLike> = {
   moon: Moon, eye: Eye,
 };
 
-export function Icon({ name, size = 22, color, fill = 'none', strokeWidth = 1.75 }: { name: IconName; size?: number; color?: string; fill?: string; strokeWidth?: number }) {
+export function Icon({ name, size = 24, color, fill = 'none', strokeWidth = 1.75 }: { name: IconName; size?: number; color?: string; fill?: string; strokeWidth?: number }) {
   const colors = useColors();
   const Cmp = map[name];
   return <Cmp size={size} color={color ?? colors.text} strokeWidth={strokeWidth} fill={fill} />;

@@ -48,7 +48,7 @@ export default function EditProfile() {
         </View>
         <Animated.View style={[{ gap: layout.item }, shake.style]}>
           <Input label="Full name" value={form.name} onChangeText={set('name')} autoComplete="name" error={errors.name} />
-          <View style={{ gap: 6 }}>
+          <View style={{ gap: 4 }}>
             <Input label="Email" value={form.email} onChangeText={set('email')} editable={!googleManaged} autoCapitalize="none" keyboardType="email-address" autoComplete="email" error={errors.email} />
             {googleManaged && <T v="caption" color={colors.text3}>Email is managed by Google and can't be changed here.</T>}
           </View>

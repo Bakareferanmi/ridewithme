@@ -24,7 +24,7 @@ const SLIDES: Slide[] = [
 function Bar({ i, x, w }: { i: number; x: SharedValue<number>; w: number }) {
   const colors = useColors();
   const a = useAnimatedStyle(() => ({ opacity: interpolate(x.value, [(i - 1) * w, i * w], [0.18, 1], 'clamp') }));
-  return <Animated.View style={[{ flex: 1, height: 3, borderRadius: 2, backgroundColor: colors.orange500 }, a]} />;
+  return <Animated.View style={[{ flex: 1, height: 4, borderRadius: 4, backgroundColor: colors.orange500 }, a]} />;
 }
 
 export default function Onboarding() {
@@ -45,7 +45,7 @@ export default function Onboarding() {
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg, paddingTop: insets.top + 16, paddingBottom: insets.bottom + 24 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 24, paddingHorizontal: SIDE, height: 40 }}>
-        <View style={{ flex: 1, flexDirection: 'row', gap: 6 }}>{SLIDES.map((s, i) => <Bar key={s.title} i={i} x={x} w={width} />)}</View>
+        <View style={{ flex: 1, flexDirection: 'row', gap: 4 }}>{SLIDES.map((s, i) => <Bar key={s.title} i={i} x={x} w={width} />)}</View>
         <PressableScale onPress={done} disabled={last} accessibilityRole="button" accessibilityLabel="Skip" style={{ opacity: last ? 0 : 1 }}>
           <T v="label" color={colors.text2}>Skip</T>
         </PressableScale>
@@ -67,9 +67,9 @@ export default function Onboarding() {
               {item.icon === 'logo'
                 ? <Image source={require('../assets/logo.png')} style={{ width: 64, height: 64 }} resizeMode="contain" accessibilityIgnoresInvertColors />
                 : <Icon name={item.icon} size={56} color={colors.orange500} strokeWidth={1.25} />}
-              <View style={{ gap: 14 }}>
+              <View style={{ gap: 12 }}>
                 <T v="h1" style={{ fontSize: 32, lineHeight: 40 }}>{item.title}</T>
-                <T color={colors.text2} style={{ fontSize: 16, lineHeight: 25, maxWidth: 320 }}>{item.body}</T>
+                <T color={colors.text2} style={{ fontSize: 16, lineHeight: 24, maxWidth: 320 }}>{item.body}</T>
               </View>
             </Animated.View>
           </View>
@@ -78,10 +78,10 @@ export default function Onboarding() {
 
       <View style={{ paddingHorizontal: SIDE }}>
         {last ? (
-          <Animated.View entering={FadeInDown.springify().damping(20)} style={{ gap: 14 }}>
+          <Animated.View entering={FadeInDown.springify().damping(20)} style={{ gap: 12 }}>
             <GoogleButton onDone={done} />
             <Button label="Sign in with email" variant="secondary" onPress={() => { finishOnboarding(); router.replace('/(tabs)'); router.push('/login'); }} />
-            <PressableScale onPress={done} accessibilityRole="button" accessibilityLabel="Continue as guest" style={{ alignSelf: 'center', paddingVertical: 10, paddingHorizontal: 20 }}>
+            <PressableScale onPress={done} accessibilityRole="button" accessibilityLabel="Continue as guest" style={{ alignSelf: 'center', paddingVertical: 12, paddingHorizontal: 20 }}>
               <T v="label" color={colors.text2}>Continue as guest</T>
             </PressableScale>
           </Animated.View>

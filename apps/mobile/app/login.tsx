@@ -40,7 +40,7 @@ export default function Login() {
           <T color={colors.text2}>Sign in or create an account to save vehicles and track orders.</T>
         </Animated.View>
 
-        <View style={{ gap: 10 }}>
+        <View style={{ gap: 8 }}>
           <GoogleButton onDone={() => router.back()} />
           <T v="caption" color={colors.text3} style={{ textAlign: 'center' }}>New here? Google creates your account the first time you sign in.</T>
         </View>

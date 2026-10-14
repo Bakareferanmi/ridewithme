@@ -31,12 +31,12 @@ function AuctionTile({ v }: { v: Vehicle }) {
       style={{ width: TILE, borderRadius: 20, overflow: 'hidden', backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border }}
     >
       <VehiclePhoto photo={v.photos[0]} height={120} width={500} />
-      <View style={{ padding: 14, gap: 6 }}>
+      <View style={{ padding: 12, gap: 4 }}>
         <T v="title" numberOfLines={1}>{vehicleName(v)}</T>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <T v="label">{formatNaira(a.currentBid)}</T>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
-            <Icon name="clock" size={13} color={urgent ? colors.danger : colors.text2} />
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+            <Icon name="clock" size={12} color={urgent ? colors.danger : colors.text2} />
             <T v="caption" color={urgent ? colors.danger : colors.text2}>{text}</T>
           </View>
         </View>
@@ -59,8 +59,8 @@ export default function Home() {
         <T v="h1">Find your next ride</T>
       </Animated.View>
       <Animated.View entering={FadeInDown.delay(80).springify()} style={{ paddingHorizontal: layout.gutter }}>
-        <PressableScale onPress={() => router.push('/explore')} accessibilityRole="search" accessibilityLabel="Search vehicles" style={{ height: 54, borderRadius: radius.pill, backgroundColor: colors.surface2, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 20 }}>
-          <Icon name="search" size={18} color={colors.text3} />
+        <PressableScale onPress={() => router.push('/explore')} accessibilityRole="search" accessibilityLabel="Search vehicles" style={{ height: 56, borderRadius: radius.pill, backgroundColor: colors.surface2, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 20 }}>
+          <Icon name="search" size={20} color={colors.text3} />
           <T color={colors.text3}>Search make, model or city</T>
         </PressableScale>
       </Animated.View>
@@ -68,7 +68,7 @@ export default function Home() {
         {listingModes.map((m, i) => (
           <Animated.View key={m.id} entering={FadeInRight.delay(160 + i * 60).springify()} style={{ flex: 1 }}>
             <PressableScale onPress={() => router.push({ pathname: '/explore', params: { mode: m.id } })} accessibilityRole="button" accessibilityLabel={m.label} style={{ alignItems: 'center', gap: 8 }}>
-              <View style={{ width: 56, height: 56, borderRadius: 20, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name={ICON[m.id]} size={22} color={colors.orange500} /></View>
+              <View style={{ width: 56, height: 56, borderRadius: 20, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name={ICON[m.id]} size={24} color={colors.orange500} /></View>
               <T v="caption" color={colors.text2}>{m.label}</T>
             </PressableScale>
           </Animated.View>
@@ -79,7 +79,7 @@ export default function Home() {
           <View style={{ paddingHorizontal: layout.gutter }}>
             <SectionHeader title="Ending soon" action="See all" onAction={() => router.push('/auctions')} />
           </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: layout.gutter, gap: 14 }}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: layout.gutter, gap: 12 }}>
             {endingSoon.map((v) => <AuctionTile key={v.id} v={v} />)}
           </ScrollView>
         </View>

@@ -14,7 +14,7 @@ export function VehicleArt({ height, children }: { height: number; children?: Re
   const colors = useColors();
   return (
     <LinearGradient colors={[colors.artA, colors.artB]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ height, alignItems: 'center', justifyContent: 'center' }}>
-      <Icon name="car" size={Math.min(96, height * 0.5)} color={colors.artIcon} />
+      <Icon name="car" size={Math.round(Math.min(96, height * 0.5) / 4) * 4} color={colors.artIcon} />
       {children}
     </LinearGradient>
   );
@@ -43,7 +43,7 @@ export function HeartButton({ id, inline }: { id: string; inline?: boolean }) {
   const a = useAnimatedStyle(() => ({ transform: [{ scale: sc.value }] }));
   return (
     <PressableScale accessibilityRole="button" accessibilityLabel={on ? 'Remove from saved' : 'Save vehicle'} onPress={() => { sc.value = withSequence(withSpring(1.35, { damping: 6 }), withSpring(1)); toggleFavorite(id); }} style={inline ? s.heartInline : s.heart}>
-      <Animated.View style={a}><Icon name="heart" size={inline ? 19 : 18} color={on ? colors.orange500 : inline ? colors.text3 : colors.text} fill={on ? colors.orange500 : 'none'} /></Animated.View>
+      <Animated.View style={a}><Icon name="heart" size={20} color={on ? colors.orange500 : inline ? colors.text3 : colors.text} fill={on ? colors.orange500 : 'none'} /></Animated.View>
     </PressableScale>
   );
 }
@@ -67,14 +67,14 @@ export function VehicleCard({ vehicle, mode, index = 0 }: { vehicle: Vehicle; mo
         </View>
         <View style={s.info}>
           <View style={s.top}>
-            <T v="title" numberOfLines={1} style={{ flex: 1, fontSize: 13.5, lineHeight: 19 }}>{vehicleName(vehicle)}</T>
+            <T v="title" numberOfLines={1} style={{ flex: 1, fontSize: 14 }}>{vehicleName(vehicle)}</T>
             <HeartButton id={vehicle.id} inline />
           </View>
-          <T v="caption" color={colors.text2} numberOfLines={1} style={{ fontSize: 11.5, lineHeight: 16 }}>{vehicle.location} · {formatKm(vehicle.mileageKm)}</T>
+          <T v="caption" color={colors.text2} numberOfLines={1}>{vehicle.location} · {formatKm(vehicle.mileageKm)}</T>
           <View style={s.bottom}>
             {price ? (
-              <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 2, flexShrink: 1 }}>
-                <T v="title" numberOfLines={1} style={{ fontSize: 14.5, lineHeight: 20 }}>{formatNaira(price.amount)}</T>
+              <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4, flexShrink: 1 }}>
+                <T v="title" numberOfLines={1}>{formatNaira(price.amount)}</T>
                 <T v="caption" color={colors.text3}>{suffix}</T>
               </View>
             ) : <View />}
@@ -87,11 +87,11 @@ export function VehicleCard({ vehicle, mode, index = 0 }: { vehicle: Vehicle; mo
 }
 
 const makeStyles = (colors: ColorPalette) => StyleSheet.create({
-  card: { flexDirection: 'row', alignItems: 'stretch', gap: 14, padding: 10, borderRadius: 20, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border },
-  thumb: { width: THUMB_W, height: THUMB_H, borderRadius: 14, overflow: 'hidden' },
-  info: { flex: 1, justifyContent: 'space-between', paddingVertical: 2 },
-  top: { flexDirection: 'row', alignItems: 'center', gap: 8, marginRight: -6 },
+  card: { flexDirection: 'row', alignItems: 'stretch', gap: 12, padding: 12, borderRadius: 20, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border },
+  thumb: { width: THUMB_W, height: THUMB_H, borderRadius: 16, overflow: 'hidden' },
+  info: { flex: 1, justifyContent: 'space-between', paddingVertical: 4 },
+  top: { flexDirection: 'row', alignItems: 'center', gap: 8, marginRight: -4 },
   bottom: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8, paddingRight: 4 },
-  heart: { position: 'absolute', right: 12, top: 12, width: 36, height: 36, borderRadius: 18, backgroundColor: colors.overlay, alignItems: 'center', justifyContent: 'center' },
+  heart: { position: 'absolute', right: 12, top: 12, width: 36, height: 36, borderRadius: 20, backgroundColor: colors.overlay, alignItems: 'center', justifyContent: 'center' },
   heartInline: { width: 32, height: 32, alignItems: 'center', justifyContent: 'center' },
 });

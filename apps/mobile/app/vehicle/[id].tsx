@@ -32,8 +32,8 @@ function Gallery({ photos }: { photos: string[] }) {
         onMomentumScrollEnd={(e) => setPage(Math.round(e.nativeEvent.contentOffset.x / width))}
         renderItem={({ item }) => <View style={{ width }}><VehiclePhoto photo={item} height={HERO} width={1100} /></View>}
       />
-      <View pointerEvents="none" style={{ position: 'absolute', bottom: 36, left: 0, right: 0, flexDirection: 'row', justifyContent: 'center', gap: 6 }}>
-        {photos.map((p, i) => <View key={p} style={{ width: i === page ? 18 : 6, height: 6, borderRadius: 3, backgroundColor: i === page ? colors.orange500 : 'rgba(255,255,255,0.7)' }} />)}
+      <View pointerEvents="none" style={{ position: 'absolute', bottom: 36, left: 0, right: 0, flexDirection: 'row', justifyContent: 'center', gap: 4 }}>
+        {photos.map((p, i) => <View key={p} style={{ width: i === page ? 24 : 8, height: 8, borderRadius: 4, backgroundColor: i === page ? colors.orange500 : 'rgba(255,255,255,0.7)' }} />)}
       </View>
     </View>
   );
@@ -108,16 +108,16 @@ export default function VehicleDetail() {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      <Animated.ScrollView onScroll={onScroll} scrollEventThrottle={16} contentContainerStyle={{ paddingBottom: 130 }} showsVerticalScrollIndicator={false}>
+      <Animated.ScrollView onScroll={onScroll} scrollEventThrottle={16} contentContainerStyle={{ paddingBottom: 128 }} showsVerticalScrollIndicator={false}>
         <Animated.View style={[{ height: HERO, overflow: 'hidden' }, hero]}><Gallery photos={v.photos} /></Animated.View>
         <View style={{ marginTop: -24, borderTopLeftRadius: 28, borderTopRightRadius: 28, backgroundColor: colors.bg, paddingHorizontal: layout.gutter, paddingTop: 28, gap: layout.section }}>
-          <Animated.View entering={FadeInDown.springify()} style={{ gap: 14 }}>
-            <View style={{ flexDirection: 'row', gap: 6 }}>{v.inspected && <Badge label="Inspected" tone="success" />}<Badge label={v.body} tone="info" /></View>
+          <Animated.View entering={FadeInDown.springify()} style={{ gap: 12 }}>
+            <View style={{ flexDirection: 'row', gap: 4 }}>{v.inspected && <Badge label="Inspected" tone="success" />}<Badge label={v.body} tone="info" /></View>
             <T v="h2">{vehicleName(v)}</T>
             <T color={colors.text2}>{v.description}</T>
           </Animated.View>
           {options.length > 1 && <Segmented options={options} value={mode} onChange={setMode} />}
-          <Animated.View key={mode} entering={FadeInDown.springify()} style={{ padding: 20, borderRadius: 24, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 14 }}>
+          <Animated.View key={mode} entering={FadeInDown.springify()} style={{ padding: 20, borderRadius: 24, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 12 }}>
             {price && <><T v="label" color={colors.text2}>{mode === 'auction' ? 'Current bid' : price.label}</T>
               <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}><T v="h2">{formatNaira(mode === 'auction' ? current : price.amount)}</T><T color={colors.text3}>{price.suffix}</T></View></>}
             {mode === 'rent' && (
@@ -135,14 +135,14 @@ export default function VehicleDetail() {
           </Animated.View>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
             {specs.map((s, i) => (
-              <Animated.View key={s.label} entering={FadeInDown.delay(i * 60).springify()} style={{ width: '48%', padding: 14, borderRadius: 16, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 6 }}>
-                <Icon name={s.icon} size={18} color={colors.text2} /><T v="caption" color={colors.text3}>{s.label}</T><T v="label">{s.value}</T>
+              <Animated.View key={s.label} entering={FadeInDown.delay(i * 60).springify()} style={{ width: '48%', padding: 16, borderRadius: 16, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 4 }}>
+                <Icon name={s.icon} size={20} color={colors.text2} /><T v="caption" color={colors.text3}>{s.label}</T><T v="label">{s.value}</T>
               </Animated.View>
             ))}
           </View>
-          <View style={{ gap: 14 }}>
+          <View style={{ gap: 12 }}>
             <T v="h3">Features</T>
-            {v.features.map((f) => <View key={f} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}><Icon name="check" size={16} color={colors.text2} /><T color={colors.text2}>{f}</T></View>)}
+            {v.features.map((f) => <View key={f} style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}><Icon name="check" size={16} color={colors.text2} /><T color={colors.text2}>{f}</T></View>)}
           </View>
         </View>
       </Animated.ScrollView>

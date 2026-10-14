@@ -56,10 +56,10 @@ export default function Orders() {
       ) : (
         <ScrollView contentContainerStyle={{ padding: layout.gutter, gap: 16 }}>
           {orders.map((o) => (
-            <PressableScale key={o.id} onPress={() => router.push({ pathname: '/vehicle/[id]', params: { id: o.vehicleId } })} accessibilityRole="button" accessibilityLabel={`${o.vehicleName}, ${STATUS[o.status].label}`} style={{ borderRadius: 24, backgroundColor: colors.surface1, padding: 20, gap: 14 }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <PressableScale key={o.id} onPress={() => router.push({ pathname: '/vehicle/[id]', params: { id: o.vehicleId } })} accessibilityRole="button" accessibilityLabel={`${o.vehicleName}, ${STATUS[o.status].label}`} style={{ borderRadius: 24, backgroundColor: colors.surface1, padding: 20, gap: 12 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                 <T v="title" style={{ flex: 1 }} numberOfLines={1}>{o.vehicleName}</T>
-                <Icon name="chevronRight" size={18} color={colors.text3} />
+                <Icon name="chevronRight" size={20} color={colors.text3} />
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Badge label={STATUS[o.status].label} tone={STATUS[o.status].tone} />

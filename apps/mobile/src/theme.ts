@@ -10,15 +10,15 @@ export const fonts = {
   semibold: 'Poppins_600SemiBold',
 } as const;
 
-/** Mobile type scale: each desktop size stepped down one level. */
+/** Mobile type scale. Line heights sit on the 4px grid; sizes are whole numbers. */
 export const VARIANTS = {
-  h1: { size: 26, line: 34, font: fonts.semibold },
-  h2: { size: 22, line: 30, font: fonts.semibold },
-  h3: { size: 17, line: 24, font: fonts.semibold },
-  title: { size: 15, line: 21, font: fonts.semibold },
-  body: { size: 14, line: 21, font: fonts.regular },
-  label: { size: 12.5, line: 17, font: fonts.medium },
-  caption: { size: 11, line: 16, font: fonts.medium },
+  h1: { size: 26, line: 32, font: fonts.semibold },
+  h2: { size: 22, line: 28, font: fonts.semibold },
+  h3: { size: 16, line: 24, font: fonts.semibold },
+  title: { size: 15, line: 20, font: fonts.semibold },
+  body: { size: 14, line: 20, font: fonts.regular },
+  label: { size: 13, line: 16, font: fonts.medium },
+  caption: { size: 12, line: 16, font: fonts.medium },
 } as const;
 export type Variant = keyof typeof VARIANTS;
 

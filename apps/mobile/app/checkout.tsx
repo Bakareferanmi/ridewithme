@@ -83,7 +83,7 @@ export default function Checkout() {
           <T v="h2">Order placed</T>
           <T color={colors.text2} style={{ textAlign: 'center' }}>{vehicleName(v)} is reserved for you. We will confirm your payment shortly.</T>
         </Animated.View>
-        <Animated.View entering={FadeIn.delay(900)} style={{ width: '100%', gap: 10, marginTop: 12 }}>
+        <Animated.View entering={FadeIn.delay(900)} style={{ width: '100%', gap: 8, marginTop: 12 }}>
           <Button label="Back to home" onPress={() => router.dismissAll()} />
         </Animated.View>
       </View>
@@ -97,7 +97,7 @@ export default function Checkout() {
           <PressableScale onPress={() => (step ? setStep(step - 1) : router.back())} accessibilityRole="button" accessibilityLabel="Back" style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name="arrowLeft" size={20} /></PressableScale>
           <T v="h3">Checkout</T>
         </View>
-        <View style={{ height: 3, borderRadius: 2, backgroundColor: colors.surface3, overflow: 'hidden' }}><Animated.View style={[{ height: 3, backgroundColor: colors.orange500 }, bar]} /></View>
+        <View style={{ height: 4, borderRadius: 4, backgroundColor: colors.surface3, overflow: 'hidden' }}><Animated.View style={[{ height: 4, backgroundColor: colors.orange500 }, bar]} /></View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>{STEPS.map((s, i) => <T key={s} v="caption" color={i <= step ? colors.text : colors.text3}>{i + 1}. {s}</T>)}</View>
       </View>
       <ScrollView contentContainerStyle={{ paddingHorizontal: layout.gutter, paddingTop: 12, gap: layout.item, paddingBottom: 140 }} keyboardShouldPersistTaps="handled">
@@ -111,14 +111,14 @@ export default function Checkout() {
             </Animated.View>
           )}
           {step === 1 && METHODS.map((mm) => (
-            <PressableScale key={mm.id} onPress={() => setMethod(mm.id)} accessibilityRole="radio" accessibilityState={{ selected: method === mm.id }} style={{ flexDirection: 'row', alignItems: 'center', gap: 14, padding: 18, borderRadius: 20, backgroundColor: method === mm.id ? colors.orangeTint : colors.surface1, borderWidth: 1, borderColor: method === mm.id ? colors.orange500 : colors.border }}>
+            <PressableScale key={mm.id} onPress={() => setMethod(mm.id)} accessibilityRole="radio" accessibilityState={{ selected: method === mm.id }} style={{ flexDirection: 'row', alignItems: 'center', gap: 12, padding: 16, borderRadius: 20, backgroundColor: method === mm.id ? colors.orangeTint : colors.surface1, borderWidth: 1, borderColor: method === mm.id ? colors.orange500 : colors.border }}>
               <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name={mm.icon} size={20} color={colors.orange500} /></View>
               <View style={{ flex: 1 }}><T v="title">{mm.label}</T><T v="label" color={colors.text2}>{mm.sub}</T></View>
               {method === mm.id && <Animated.View entering={ZoomIn}><Icon name="checkCircle" size={20} color={colors.orange500} /></Animated.View>}
             </PressableScale>
           ))}
           {step === 2 && (
-            <View style={{ padding: 20, borderRadius: 24, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 14 }}>
+            <View style={{ padding: 20, borderRadius: 24, backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border, gap: 12 }}>
               <T v="title">{vehicleName(v)}</T>
               {[['Type', modeLabel(m)], ['Name', form.fullName], ['Phone', form.phone], ['Payment', METHODS.find((x) => x.id === method)?.label ?? '']].map(([k, val]) => (
                 <View key={k} style={{ flexDirection: 'row', justifyContent: 'space-between' }}><T color={colors.text3}>{k}</T><T>{val}</T></View>

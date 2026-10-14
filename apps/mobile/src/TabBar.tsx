@@ -29,9 +29,9 @@ export function FloatingTabBar({ state, navigation }: TabBarProps) {
         style={{
           marginHorizontal: 24,
           marginBottom: Math.max(insets.bottom, 12) + 4,
-          height: 60,
-          borderRadius: 30,
-          padding: 6,
+          height: 64,
+          borderRadius: 32,
+          padding: 4,
           flexDirection: 'row',
           backgroundColor: colors.surface1,
           borderWidth: StyleSheet.hairlineWidth,
@@ -58,9 +58,9 @@ export function FloatingTabBar({ state, navigation }: TabBarProps) {
                   const e = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
                   if (!focused && !e.defaultPrevented) navigation.navigate(route.name);
                 }}
-                style={{ flex: 1, borderRadius: 24, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, backgroundColor: focused ? colors.orangeTint : 'transparent' }}
+                style={{ flex: 1, borderRadius: 28, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4, backgroundColor: focused ? colors.orangeTint : 'transparent' }}
               >
-                <Icon name={meta.icon} size={21} color={focused ? colors.orange500 : colors.text3} strokeWidth={focused ? 2 : 1.75} />
+                <Icon name={meta.icon} size={20} color={focused ? colors.orange500 : colors.text3} strokeWidth={focused ? 2 : 1.75} />
                 {focused && (
                   <Animated.View entering={FadeIn.duration(180).delay(60)} exiting={FadeOut.duration(80)}>
                     <T v="label" color={colors.orange500} numberOfLines={1}>{meta.label}</T>

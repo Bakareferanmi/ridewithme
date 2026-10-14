@@ -19,14 +19,14 @@ function AuctionRow({ v, index }: { v: Vehicle; index: number }) {
   return (
     <Animated.View entering={FadeInDown.delay(index * 80).springify()}>
       <PressableScale accessibilityRole="button" onPress={() => router.push({ pathname: '/vehicle/[id]', params: { id: v.id } })} style={{ borderRadius: 24, overflow: 'hidden', backgroundColor: colors.surface1, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.border }}>
-        <VehiclePhoto photo={v.photos[0]} height={150} width={700} />
-        <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 20, gap: 14 }}>
+        <VehiclePhoto photo={v.photos[0]} height={152} width={700} />
+        <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 20, gap: 12 }}>
           <T v="title">{vehicleName(v)}</T>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <View><T v="caption" color={colors.text3}>Current bid</T><T v="h3">{formatNaira(a.currentBid)}</T></View>
             <View style={{ alignItems: 'flex-end', gap: 4 }}>
               <Badge label={`${a.bidCount} bids`} tone="info" />
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}><Icon name="clock" size={14} color={urgent ? colors.danger : colors.text2} /><T v="label" color={urgent ? colors.danger : colors.text2}>{text}</T></View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}><Icon name="clock" size={16} color={urgent ? colors.danger : colors.text2} /><T v="label" color={urgent ? colors.danger : colors.text2}>{text}</T></View>
             </View>
           </View>
         </View>

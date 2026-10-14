@@ -39,7 +39,7 @@ export function Button({ label, onPress, variant = 'primary', loading, disabled,
   const fg = variant === 'primary' ? colors.onPrimary : colors.text;
   return (
     <PressableScale onPress={onPress} disabled={disabled || loading} accessibilityRole="button" accessibilityLabel={label} style={[s.btn, variant === 'primary' && s.btnPrimary, variant === 'secondary' && s.btnSecondary, (disabled || loading) && { opacity: 0.55 }]}>
-      {loading ? <ActivityIndicator color={fg} /> : (<>{icon && <Icon name={icon} size={18} color={fg} />}<T v="title" color={fg}>{label}</T></>)}
+      {loading ? <ActivityIndicator color={fg} /> : (<>{icon && <Icon name={icon} size={20} color={fg} />}<T v="title" color={fg}>{label}</T></>)}
     </PressableScale>
   );
 }
@@ -80,7 +80,7 @@ export function SectionHeader({ title, action, onAction }: { title: string; acti
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
       <T v="h3" accessibilityRole="header">{title}</T>
       {!!action && !!onAction && (
-        <PressableScale onPress={onAction} accessibilityRole="button" accessibilityLabel={`${action} ${title}`} style={{ paddingVertical: 6, paddingLeft: 12 }}>
+        <PressableScale onPress={onAction} accessibilityRole="button" accessibilityLabel={`${action} ${title}`} style={{ paddingVertical: 4, paddingLeft: 12 }}>
           <T v="label" color={colors.orange400}>{action}</T>
         </PressableScale>
       )}
@@ -176,7 +176,7 @@ export function ScreenHeader({ title }: { title: string }) {
 }
 
 /** Google photo when we have one, otherwise the person's initials. */
-export function Avatar({ name, photoUrl, size = 52 }: { name: string; photoUrl?: string; size?: number }) {
+export function Avatar({ name, photoUrl, size = 56 }: { name: string; photoUrl?: string; size?: number }) {
   const colors = useColors();
   const [failed, setFailed] = useState(false);
   const box = { width: size, height: size, borderRadius: size / 2, backgroundColor: colors.orange500, alignItems: 'center' as const, justifyContent: 'center' as const, overflow: 'hidden' as const };
@@ -185,16 +185,16 @@ export function Avatar({ name, photoUrl, size = 52 }: { name: string; photoUrl?:
 }
 
 const makeStyles = (colors: ColorPalette) => StyleSheet.create({
-  btn: { minHeight: 54, borderRadius: radius.pill, paddingHorizontal: 28, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
+  btn: { minHeight: 56, borderRadius: radius.pill, paddingHorizontal: 28, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
   btnPrimary: { backgroundColor: colors.orange500 },
   btnSecondary: { backgroundColor: colors.surface2 },
-  input: { minHeight: 54, borderRadius: radius.md, borderWidth: 1, borderColor: 'transparent', backgroundColor: colors.surface2, paddingHorizontal: 16, color: colors.text, fontFamily: fonts.regular, fontSize: 15 },
-  chip: { height: 38, paddingHorizontal: 16, borderRadius: radius.pill, borderWidth: 1, borderColor: 'transparent', backgroundColor: colors.surface2, justifyContent: 'center' },
+  input: { minHeight: 56, borderRadius: radius.md, borderWidth: 1, borderColor: 'transparent', backgroundColor: colors.surface2, paddingHorizontal: 16, color: colors.text, fontFamily: fonts.regular, fontSize: 15 },
+  chip: { height: 40, paddingHorizontal: 16, borderRadius: radius.pill, borderWidth: 1, borderColor: 'transparent', backgroundColor: colors.surface2, justifyContent: 'center' },
   chipActive: { borderColor: colors.orange500, backgroundColor: colors.orangeTint },
-  seg: { padding: 3, borderRadius: radius.pill, backgroundColor: colors.surface2 },
+  seg: { padding: 4, borderRadius: radius.pill, backgroundColor: colors.surface2 },
   segInd: { position: 'absolute', top: 0, bottom: 0, left: 0, borderRadius: radius.pill, backgroundColor: colors.surface1, shadowColor: '#000', shadowOpacity: 0.12, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 2 },
   segBtn: { flex: 1, height: 40, alignItems: 'center', justifyContent: 'center' },
-  badge: { alignSelf: 'flex-start', paddingHorizontal: 9, height: 22, borderRadius: radius.pill, justifyContent: 'center' },
+  badge: { alignSelf: 'flex-start', paddingHorizontal: 8, height: 24, borderRadius: radius.pill, justifyContent: 'center' },
   empty: { alignItems: 'center', gap: 12, padding: 40 },
-  emptyIcon: { width: 56, height: 56, borderRadius: 28, backgroundColor: colors.orangeTint, alignItems: 'center', justifyContent: 'center', marginBottom: 6 },
+  emptyIcon: { width: 56, height: 56, borderRadius: 28, backgroundColor: colors.orangeTint, alignItems: 'center', justifyContent: 'center', marginBottom: 4 },
 });

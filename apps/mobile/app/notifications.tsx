@@ -20,7 +20,7 @@ export default function Notifications() {
       <View style={{ padding: layout.gutter, gap: 24 }}>
         <View style={{ borderRadius: 24, backgroundColor: colors.surface1, overflow: 'hidden' }}>
           {ITEMS.map((it, i) => (
-            <View key={it.key} style={{ flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 18, paddingHorizontal: 20, borderTopWidth: i ? StyleSheet.hairlineWidth : 0, borderTopColor: colors.border }}>
+            <View key={it.key} style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 20, paddingHorizontal: 20, borderTopWidth: i ? StyleSheet.hairlineWidth : 0, borderTopColor: colors.border }}>
               <View style={{ flex: 1 }}>
                 <T>{it.label}</T>
                 <T v="caption" color={colors.text3}>{it.sub}</T>

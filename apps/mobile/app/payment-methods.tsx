@@ -25,14 +25,14 @@ export default function PaymentMethods() {
           {METHODS.map((m, i) => {
             const on = m.id === defaultPayment;
             return (
-              <PressableScale key={m.id} onPress={() => setDefaultPayment(m.id)} accessibilityRole="radio" accessibilityState={{ selected: on }} accessibilityLabel={m.label} style={{ flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 20, paddingHorizontal: 20, borderTopWidth: i ? StyleSheet.hairlineWidth : 0, borderTopColor: colors.border }}>
+              <PressableScale key={m.id} onPress={() => setDefaultPayment(m.id)} accessibilityRole="radio" accessibilityState={{ selected: on }} accessibilityLabel={m.label} style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 20, paddingHorizontal: 20, borderTopWidth: i ? StyleSheet.hairlineWidth : 0, borderTopColor: colors.border }}>
                 <Icon name={m.icon} size={20} color={on ? colors.orange500 : colors.text2} />
                 <View style={{ flex: 1 }}>
                   <T>{m.label}</T>
                   <T v="caption" color={colors.text3}>{m.sub}</T>
                 </View>
-                <View style={{ width: 22, height: 22, borderRadius: 11, borderWidth: 2, borderColor: on ? colors.orange500 : colors.text3, alignItems: 'center', justifyContent: 'center' }}>
-                  {on && <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: colors.orange500 }} />}
+                <View style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: on ? colors.orange500 : colors.text3, alignItems: 'center', justifyContent: 'center' }}>
+                  {on && <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: colors.orange500 }} />}
                 </View>
               </PressableScale>
             );
