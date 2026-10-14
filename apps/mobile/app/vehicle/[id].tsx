@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { KeyboardAvoidingView, Modal, Platform, Pressable, StyleSheet, View } from 'react-native';
+import { FlatList, KeyboardAvoidingView, Modal, Platform, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeInDown, FadeInUp, Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
@@ -13,6 +13,31 @@ import { layout } from '../../src/theme';
 import { useColors } from '../../src/ThemeProvider';
 
 const HERO = 300;
+
+/** Swipeable photos with page dots. A single photo renders without the pager. */
+function Gallery({ photos }: { photos: string[] }) {
+  const colors = useColors();
+  const { width } = useWindowDimensions();
+  const [page, setPage] = useState(0);
+  if (photos.length <= 1) return <VehiclePhoto photo={photos[0]} height={HERO} width={1100} />;
+  return (
+    <View style={{ height: HERO }}>
+      <FlatList
+        data={photos}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(p) => p}
+        getItemLayout={(_, i) => ({ length: width, offset: width * i, index: i })}
+        onMomentumScrollEnd={(e) => setPage(Math.round(e.nativeEvent.contentOffset.x / width))}
+        renderItem={({ item }) => <View style={{ width }}><VehiclePhoto photo={item} height={HERO} width={1100} /></View>}
+      />
+      <View pointerEvents="none" style={{ position: 'absolute', bottom: 36, left: 0, right: 0, flexDirection: 'row', justifyContent: 'center', gap: 6 }}>
+        {photos.map((p, i) => <View key={p} style={{ width: i === page ? 18 : 6, height: 6, borderRadius: 3, backgroundColor: i === page ? colors.orange500 : 'rgba(255,255,255,0.7)' }} />)}
+      </View>
+    </View>
+  );
+}
 
 function BidSheet({ visible, onClose, minBid, onPlaced }: { visible: boolean; onClose: () => void; minBid: number; onPlaced: (amount: number) => void }) {
   const colors = useColors();
@@ -84,7 +109,7 @@ export default function VehicleDetail() {
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
       <Animated.ScrollView onScroll={onScroll} scrollEventThrottle={16} contentContainerStyle={{ paddingBottom: 130 }} showsVerticalScrollIndicator={false}>
-        <Animated.View style={[{ height: HERO, overflow: 'hidden' }, hero]}><VehiclePhoto photo={v.photos[0]} height={HERO} width={1100} /></Animated.View>
+        <Animated.View style={[{ height: HERO, overflow: 'hidden' }, hero]}><Gallery photos={v.photos} /></Animated.View>
         <View style={{ marginTop: -24, borderTopLeftRadius: 28, borderTopRightRadius: 28, backgroundColor: colors.bg, paddingHorizontal: layout.gutter, paddingTop: 28, gap: layout.section }}>
           <Animated.View entering={FadeInDown.springify()} style={{ gap: 14 }}>
             <View style={{ flexDirection: 'row', gap: 6 }}>{v.inspected && <Badge label="Inspected" tone="success" />}<Badge label={v.body} tone="info" /></View>
@@ -99,9 +124,9 @@ export default function VehicleDetail() {
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <T v="label">Rental days</T>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
-                  <PressableScale onPress={() => setDays(Math.max(1, days - 1))} accessibilityRole="button" accessibilityLabel="Fewer days" style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name="minus" size={16} /></PressableScale>
+                  <PressableScale onPress={() => setDays(Math.max(1, days - 1))} accessibilityRole="button" accessibilityLabel="Fewer days" style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name="minus" size={16} /></PressableScale>
                   <T v="title">{days}</T>
-                  <PressableScale onPress={() => setDays(Math.min(30, days + 1))} accessibilityRole="button" accessibilityLabel="More days" style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name="plus" size={16} /></PressableScale>
+                  <PressableScale onPress={() => setDays(Math.min(30, days + 1))} accessibilityRole="button" accessibilityLabel="More days" style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface2, alignItems: 'center', justifyContent: 'center' }}><Icon name="plus" size={16} /></PressableScale>
                 </View>
               </View>
             )}

@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 import { bodyTypes, filterVehicles, listingModes, vehicles, type BodyType, type ListingMode } from '@rwm/shared';
-import { Chip, EmptyState, Input, Segmented, Skeleton, T } from '../../src/ui';
+import { Chip, EmptyState, Input, PressableScale, Segmented, Skeleton, T } from '../../src/ui';
 import { VehicleCard } from '../../src/VehicleCard';
 import { useSimulatedLoad } from '../../src/hooks';
 import { layout } from '../../src/theme';
@@ -24,6 +24,8 @@ export default function Explore() {
 
   const toggle = (b: BodyType) => setBody((cur) => (cur.includes(b) ? cur.filter((x) => x !== b) : [...cur, b]));
   const options = [{ id: 'all' as ModeOpt, label: 'All' }, ...listingModes.map((m) => ({ id: m.id as ModeOpt, label: m.label }))];
+  const filtered = q.length > 0 || mode !== 'all' || body.length > 0;
+  const clear = () => { setQ(''); setMode('all'); setBody([]); };
 
   return (
     <Animated.FlatList
@@ -31,14 +33,26 @@ export default function Explore() {
       keyExtractor={(v) => v.id}
       contentContainerStyle={{ paddingTop: insets.top + layout.top, paddingHorizontal: layout.gutter, paddingBottom: layout.tabBar, gap: layout.item }}
       keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
       itemLayoutAnimation={LinearTransition.springify()}
       ListHeaderComponent={
         <View style={{ gap: layout.item, marginBottom: 4 }}>
           <T v="h1">Explore</T>
           <Input label="Search" hideLabel value={q} onChangeText={setQ} placeholder="Make, model or city" returnKeyType="search" />
           <Segmented options={options} value={mode} onChange={setMode} />
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>{bodyTypes.map((b) => <Chip key={b} label={b} active={body.includes(b)} onPress={() => toggle(b)} />)}</View>
-          {!loading && <T v="label" color={colors.text2}>{results.length} vehicle{results.length === 1 ? '' : 's'}</T>}
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps="handled" style={{ marginHorizontal: -layout.gutter }} contentContainerStyle={{ paddingHorizontal: layout.gutter, gap: 8 }}>
+            {bodyTypes.map((b) => <Chip key={b} label={b} active={body.includes(b)} onPress={() => toggle(b)} />)}
+          </ScrollView>
+          {!loading && (
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: 28 }}>
+              <T v="label" color={colors.text2}>{results.length} vehicle{results.length === 1 ? '' : 's'}</T>
+              {filtered && (
+                <PressableScale onPress={clear} accessibilityRole="button" accessibilityLabel="Clear filters" style={{ paddingVertical: 4, paddingLeft: 12 }}>
+                  <T v="label" color={colors.orange400}>Clear filters</T>
+                </PressableScale>
+              )}
+            </View>
+          )}
           {loading && [0, 1].map((i) => <Skeleton key={i} height={250} radius={20} />)}
         </View>
       }

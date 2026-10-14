@@ -44,22 +44,46 @@ export function Button({ label, onPress, variant = 'primary', loading, disabled,
   );
 }
 
-export function Input({ label, error, hideLabel, ...rest }: TextInputProps & { label: string; error?: string; hideLabel?: boolean }) {
+export function Input({ label, error, hideLabel, secureTextEntry, ...rest }: TextInputProps & { label: string; error?: string; hideLabel?: boolean }) {
   const s = useS();
   const colors = useColors();
   const [focus, setFocus] = useState(false);
+  const [hidden, setHidden] = useState(true);
   return (
     <View style={{ gap: 8 }}>
       {!hideLabel && <T v="label" color={colors.text2}>{label}</T>}
-      <TextInput
-        {...rest}
-        accessibilityLabel={label}
-        placeholderTextColor={colors.text3}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-        style={[s.input, focus && { borderColor: colors.orange500 }, !!error && { borderColor: colors.danger }]}
-      />
+      <View>
+        <TextInput
+          {...rest}
+          secureTextEntry={!!secureTextEntry && hidden}
+          accessibilityLabel={label}
+          placeholderTextColor={colors.text3}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          style={[s.input, !!secureTextEntry && { paddingRight: 52 }, focus && { borderColor: colors.orange500 }, !!error && { borderColor: colors.danger }]}
+        />
+        {!!secureTextEntry && (
+          <Pressable onPress={() => setHidden((h) => !h)} hitSlop={8} accessibilityRole="button" accessibilityLabel={hidden ? 'Show password' : 'Hide password'} style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 52, alignItems: 'center', justifyContent: 'center' }}>
+            <Icon name="eye" size={20} color={hidden ? colors.text3 : colors.orange500} />
+          </Pressable>
+        )}
+      </View>
       {!!error && <T v="caption" color={colors.danger}>{error}</T>}
+    </View>
+  );
+}
+
+/** Section title with an optional action on the right, e.g. "See all". */
+export function SectionHeader({ title, action, onAction }: { title: string; action?: string; onAction?: () => void }) {
+  const colors = useColors();
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+      <T v="h3" accessibilityRole="header">{title}</T>
+      {!!action && !!onAction && (
+        <PressableScale onPress={onAction} accessibilityRole="button" accessibilityLabel={`${action} ${title}`} style={{ paddingVertical: 6, paddingLeft: 12 }}>
+          <T v="label" color={colors.orange400}>{action}</T>
+        </PressableScale>
+      )}
     </View>
   );
 }
@@ -169,7 +193,7 @@ const makeStyles = (colors: ColorPalette) => StyleSheet.create({
   chipActive: { borderColor: colors.orange500, backgroundColor: colors.orangeTint },
   seg: { padding: 3, borderRadius: radius.pill, backgroundColor: colors.surface2 },
   segInd: { position: 'absolute', top: 0, bottom: 0, left: 0, borderRadius: radius.pill, backgroundColor: colors.surface1, shadowColor: '#000', shadowOpacity: 0.12, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 2 },
-  segBtn: { flex: 1, height: 34, alignItems: 'center', justifyContent: 'center' },
+  segBtn: { flex: 1, height: 40, alignItems: 'center', justifyContent: 'center' },
   badge: { alignSelf: 'flex-start', paddingHorizontal: 9, height: 22, borderRadius: radius.pill, justifyContent: 'center' },
   empty: { alignItems: 'center', gap: 12, padding: 40 },
   emptyIcon: { width: 56, height: 56, borderRadius: 28, backgroundColor: colors.orangeTint, alignItems: 'center', justifyContent: 'center', marginBottom: 6 },
