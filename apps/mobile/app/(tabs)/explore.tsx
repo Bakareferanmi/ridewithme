@@ -53,7 +53,7 @@ export default function Explore() {
               )}
             </View>
           )}
-          {loading && [0, 1].map((i) => <Skeleton key={i} height={250} radius={20} />)}
+          {loading && [0, 1, 2].map((i) => <Skeleton key={i} height={112} radius={20} />)}
         </View>
       }
       renderItem={({ item, index }) => <VehicleCard vehicle={item} mode={mode === 'all' ? undefined : mode} index={index} />}
