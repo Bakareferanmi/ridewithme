@@ -3,18 +3,38 @@
     "name": "RideWithMe",
     "slug": "ridewithme",
     "scheme": "ridewithme",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "icon": "./assets/icon.png",
     "backgroundColor": "#0A0A0A",
     "newArchEnabled": true,
-    "splash": { "image": "./assets/splash-icon.png", "resizeMode": "contain", "backgroundColor": "#0A0A0A" },
-    "ios": { "supportsTablet": true, "bundleIdentifier": "com.ridewithme.app" },
-    "android": {
-      "package": "com.ridewithme.app",
-      "adaptiveIcon": { "foregroundImage": "./assets/adaptive-icon.png", "backgroundColor": "#0A0A0A" }
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0A0A0A"
     },
-    "plugins": ["expo-router", "expo-font", "expo-web-browser"]
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ridewithme.app"
+    },
+    "android": {
+      "package": "com.beepeelabs.ridewithme",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0A0A0A"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-web-browser"
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "da7bf779-d0da-4419-87f6-0dbd86a6cee1"
+      }
+    }
   }
 }
